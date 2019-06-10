@@ -1,0 +1,8 @@
+zh:
+  common.badrequest: 错误的请求
+  common.serverfail: 服务器内部错
+  common.sessionfail: 您太久没有操作页面，需要重新登录验证您的身份
+en:
+  common.badrequest: Bad request
+  common.serverfail: Server internal error
+  common.sessionfail: You have not operate the site for long time, please relogin the site agin
