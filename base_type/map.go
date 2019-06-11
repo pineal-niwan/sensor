@@ -6,7 +6,6 @@ func IsKeyInMap(m map[string]interface{}, k string) bool {
 	return ok
 }
 
-
 //将map中的value转换为bool
 func ConvertMapVal2Bool(m map[string]interface{}, k string) bool {
 	x, ok := m[k]
@@ -68,4 +67,3 @@ func ConvertMapVal2String(m map[string]interface{}, k string) string {
 	}
 	return Convert2String(x)
 }
-

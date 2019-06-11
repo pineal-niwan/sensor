@@ -46,7 +46,7 @@ func (l *LangStringGroup) SetDefaultLang(defaultLang string) {
 }
 
 //获取缺省语言
-func (l *LangStringGroup) GetDefaultLang() string{
+func (l *LangStringGroup) GetDefaultLang() string {
 	l.RLock()
 	defaultLang := l.defaultLang
 	l.RUnlock()

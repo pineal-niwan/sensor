@@ -17,8 +17,10 @@ var (
 )
 
 var (
+	//gin模式错误
 	ErrHttpXInvalidMode = errors.New("httpx invalid mode")
-	ErrHttpXLoggerNil   = errors.New("nil httpx logger")
+	//没有设置logger
+	ErrHttpXLoggerNil = errors.New("nil httpx logger")
 )
 
 //记录日志
@@ -88,6 +90,11 @@ func NewGinHandler(mode string, ginLogger logger.Logger, prefix string, defaultL
 	//设置翻译
 	GinI18n := &i18n.LangStringGroup{}
 	GinI18n.Init(defaultLang)
+	defaultI18nConfig, err := i18n.LoadI18nConfigFromBuffer([]byte(DefaultI18nConfig))
+	if err != nil {
+		return nil, err
+	}
+	GinI18n.ConfigBy(defaultI18nConfig)
 	for _, i18nFile := range i18nFiles {
 		i18nConfig, err := i18n.LoadI18nConfigFromFile(i18nFile)
 		if err != nil {

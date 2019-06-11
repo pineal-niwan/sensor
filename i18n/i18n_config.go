@@ -19,3 +19,10 @@ func LoadI18nConfigFromFile(filePath string) (I18nConfigHash, error) {
 	err = yaml.Unmarshal(buf, &i18nConfig)
 	return i18nConfig, err
 }
+
+//load i18n配置
+func LoadI18nConfigFromBuffer(buf []byte) (I18nConfigHash, error) {
+	var i18nConfig I18nConfigHash
+	err := yaml.Unmarshal(buf, &i18nConfig)
+	return i18nConfig, err
+}

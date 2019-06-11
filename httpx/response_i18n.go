@@ -1,3 +1,7 @@
+package httpx
+
+const (
+	DefaultI18nConfig = `
 zh:
   common.badrequest: 错误的请求
   common.sessionfail: 您太久没有操作页面，需要重新登录验证您的身份
@@ -10,3 +14,5 @@ en:
   common.permissiondeny: You have not the corresponding permissions
   common.notfound: No corresponding resources found
   common.serverfail: Server internal error
+`
+)

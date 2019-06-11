@@ -8,14 +8,14 @@ func testDecryptDecrypt(t *testing.T, key []byte, message string) {
 	x, err := Encrypt(key, message)
 	if err != nil {
 		t.Errorf("encrypt error:%+v", err)
-	}else{
+	} else {
 		t.Logf("encrypt message:%+v", x)
 	}
 
 	y, err := Decrypt(key, x)
 	if err != nil {
 		t.Errorf("encrypt error:%+v", err)
-	}else {
+	} else {
 		t.Logf("decrypt message:%+v", y)
 		if y != message {
 			t.Fail()
