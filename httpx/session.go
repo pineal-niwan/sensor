@@ -1,6 +1,7 @@
 package httpx
 
 import (
+	"crypto/aes"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
 	"net/http"
@@ -21,6 +22,19 @@ func encodeSession(key string, hashKeyWithTime HashKeyWithTime) (hashKey string,
 func decodeSession(key string, hashKey string) (hashKeyWithTime HashKeyWithTime, err error) {
 	err = CookieCodec.Decode(key, hashKey, &hashKeyWithTime)
 	return
+}
+
+//设置codec
+//其中blockKey长度需要为16/24/32
+func SetCookieCodec(hashKey string, blockKey string) error {
+	l := len(blockKey)
+	switch l {
+	default:
+		return aes.KeySizeError(l)
+	case 16, 24, 32:
+		CookieCodec = securecookie.New([]byte(hashKey), []byte(blockKey))
+	}
+	return nil
 }
 
 //获取session
