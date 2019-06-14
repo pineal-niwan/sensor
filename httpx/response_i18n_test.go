@@ -1,7 +1,7 @@
 package httpx
 
 import (
-	"pineal/sensor/i18n"
+	"github.com/pineal/sensor/i18n"
 	"testing"
 )
 

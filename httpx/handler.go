@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-errors/errors"
+	"github.com/pineal/sensor/i18n"
+	"github.com/pineal/sensor/logger"
 	"net/http"
 	"net/http/httputil"
-	"pineal/sensor/i18n"
-	"pineal/sensor/logger"
 	"time"
 )
 

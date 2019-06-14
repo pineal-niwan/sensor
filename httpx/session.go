@@ -4,8 +4,8 @@ import (
 	"crypto/aes"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
+	"github.com/pineal/sensor/logger"
 	"net/http"
-	"pineal/sensor/logger"
 )
 
 var (
