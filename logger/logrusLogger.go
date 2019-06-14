@@ -1,6 +1,8 @@
 package logger
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
 var (
 	//缺省的logrus logger

@@ -2,8 +2,8 @@ package httpx
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/pineal/sensor/i18n"
-	"github.com/pineal/sensor/logger"
+	"github.com/pineal-niwan/sensor/i18n"
+	"github.com/pineal-niwan/sensor/logger"
 	"github.com/xeipuuv/gojsonschema"
 	"time"
 )

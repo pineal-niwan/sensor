@@ -4,7 +4,7 @@ import (
 	"crypto/aes"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/securecookie"
-	"github.com/pineal/sensor/logger"
+	"github.com/pineal-niwan/sensor/logger"
 	"net/http"
 )
 

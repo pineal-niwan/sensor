@@ -2,7 +2,7 @@ package sql_convert
 
 import (
 	"github.com/go-errors/errors"
-	"github.com/pineal/sensor/json"
+	"github.com/pineal-niwan/sensor/json"
 )
 
 var (
