@@ -56,6 +56,21 @@ func (timeStamp *UnixStamp) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+//将interface转换为UnixStamp
+func Convert2UnixStamp(v interface{}) (UnixStamp, bool) {
+	j, ok := v.(UnixStamp)
+	return j, ok
+}
+
+//转换map中的key为UnixStamp
+func ConvertMapVal2UnixStamp(m map[string]interface{}, k string) (UnixStamp, bool) {
+	x, ok := m[k]
+	if !ok {
+		return UnixStamp{}, false
+	}
+	return Convert2UnixStamp(x)
+}
+
 //纳秒级的unix timestamp
 type UnixNanoStamp struct {
 	time.Time
@@ -99,4 +114,19 @@ func (timestampNano *UnixNanoStamp) UnmarshalJSON(data []byte) error {
 	}
 	timestampNano.Time = time.Unix(0, timestampUnixNano)
 	return nil
+}
+
+//将interface转换为UnixNanoStamp
+func Convert2UnixNanoStamp(v interface{}) (UnixNanoStamp, bool) {
+	j, ok := v.(UnixNanoStamp)
+	return j, ok
+}
+
+//转换map中的key为UnixStamp
+func ConvertMapVal2UnixNanoStamp(m map[string]interface{}, k string) (UnixNanoStamp, bool) {
+	x, ok := m[k]
+	if !ok {
+		return UnixNanoStamp{}, false
+	}
+	return Convert2UnixNanoStamp(x)
 }

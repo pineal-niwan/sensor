@@ -59,3 +59,18 @@ func (jsonMap *JsonMap) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, &jsonMap.Map)
 	return err
 }
+
+//将interface转换为JsonMap
+func Convert2JsonMap(v interface{}) (JsonMap, bool) {
+	j, ok := v.(JsonMap)
+	return j, ok
+}
+
+//转换map中的key为JsonMap
+func ConvertMapVal2JsonMap(m map[string]interface{}, k string) (JsonMap, bool) {
+	x, ok := m[k]
+	if !ok {
+		return JsonMap{}, false
+	}
+	return Convert2JsonMap(x)
+}
