@@ -62,7 +62,18 @@ func (jsonMap *JsonMap) UnmarshalJSON(data []byte) error {
 
 //将interface转换为JsonMap
 func Convert2JsonMap(v interface{}) (JsonMap, bool) {
-	j, ok := v.(JsonMap)
+	var j JsonMap
+	ok := true
+	switch v.(type) {
+	case JsonMap:
+		j = v.(JsonMap)
+	case map[string]interface{}:
+		j.Map = v.(map[string]interface{})
+	case Map:
+		j.Map = v.(Map)
+	default:
+		ok = false
+	}
 	return j, ok
 }
 
