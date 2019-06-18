@@ -2,6 +2,7 @@ package sql_convert
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"github.com/go-errors/errors"
 	"time"
 )
@@ -13,6 +14,11 @@ var (
 //秒级的unix timestamp
 type UnixStamp struct {
 	time.Time
+}
+
+//新建unix stamp
+func NewUnixStamp(t time.Time) UnixStamp {
+	return UnixStamp{t}
 }
 
 //从数据库读取后组装
@@ -33,25 +39,64 @@ func (timestamp *UnixStamp) Value() (driver.Value, error) {
 	return timestampUnix, nil
 }
 
+//Json marshal
+func (timeStamp UnixStamp) MarshalJSON() ([]byte, error) {
+	timestampUnix := timeStamp.Unix()
+	return json.Marshal(timestampUnix)
+}
+
+//Json marshal
+func (timeStamp *UnixStamp) UnmarshalJSON(data []byte) error {
+	var timestampUnix int64
+	err := json.Unmarshal(data, &timestampUnix)
+	if err != nil {
+		return err
+	}
+	timeStamp.Time = time.Unix(timestampUnix, 0)
+	return nil
+}
+
 //纳秒级的unix timestamp
 type UnixNanoStamp struct {
 	time.Time
 }
 
+//新建unix nano stamp
+func NewUnixNanoStamp(t time.Time) UnixNanoStamp {
+	return UnixNanoStamp{t}
+}
+
 //从数据库读取后组装
-func (timestamp *UnixNanoStamp) Scan(src interface{}) error {
+func (timestampNano *UnixNanoStamp) Scan(src interface{}) error {
 	switch src := src.(type) {
 	case int64:
-		timestamp.Time = time.Unix(0, src)
+		timestampNano.Time = time.Unix(0, src)
 		return nil
 	default:
-		timestamp.Time = time.Time{}
+		timestampNano.Time = time.Time{}
 		return ErrTimestampIsNotInt64
 	}
 }
 
 //写回数据库时的组装
-func (timestamp *UnixNanoStamp) Value() (driver.Value, error) {
-	timestampUnix := timestamp.UnixNano()
-	return timestampUnix, nil
+func (timestampNano *UnixNanoStamp) Value() (driver.Value, error) {
+	timestampUnixNano := timestampNano.UnixNano()
+	return timestampUnixNano, nil
+}
+
+//Json marshal
+func (timestampNano UnixNanoStamp) MarshalJSON() ([]byte, error) {
+	timestampUnixNano := timestampNano.UnixNano()
+	return json.Marshal(timestampUnixNano)
+}
+
+//Json marshal
+func (timestampNano *UnixNanoStamp) UnmarshalJSON(data []byte) error {
+	var timestampUnixNano int64
+	err := json.Unmarshal(data, &timestampUnixNano)
+	if err != nil {
+		return err
+	}
+	timestampNano.Time = time.Unix(0, timestampUnixNano)
+	return nil
 }

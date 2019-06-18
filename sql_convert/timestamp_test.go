@@ -1,7 +1,8 @@
 package sql_convert
 
 import (
-	"pineal/sensor/time_tool"
+	"encoding/json"
+	"github.com/pineal-niwan/sensor/time_tool"
 	"testing"
 	"time"
 )
@@ -70,4 +71,24 @@ func TestUnixNanoStamp_Value(t *testing.T) {
 		t.Log(timeNow.UnixNano())
 		t.Log(finalUnix)
 	}
+}
+
+func TestMarshalUnixStamp(t *testing.T) {
+	t1 := time.Now()
+	t2 := UnixStamp{Time:t1}
+	x1, err1 := json.Marshal(t1)
+	x2, err2 := json.Marshal(t2)
+
+	t.Logf("time is %+v", t1)
+
+	t.Logf("x1 is :%+v err1 is :%+v", x1, err1)
+	t.Logf("x2 is :%+v err2 is :%+v", x2, err2)
+
+	var y1 time.Time
+	var y2 UnixStamp
+
+	err1 = json.Unmarshal(x1, &y1)
+	err2 = json.Unmarshal(x2, &y2)
+	t.Logf("y1 is :%+v err1 is :%+v", y1, err1)
+	t.Logf("y2 is :%+v err2 is :%+v", y2, err2)
 }
