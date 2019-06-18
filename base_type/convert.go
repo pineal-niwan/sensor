@@ -3,6 +3,7 @@ package base_type
 import (
 	"fmt"
 	"strconv"
+	"time"
 )
 
 //将基本类型转换为字符串
@@ -217,6 +218,12 @@ func Convert2Float64(v interface{}) float64 {
 		iv = 0
 	}
 	return iv
+}
+
+//转换为time.Time
+func Convert2Time(v interface{}) (time.Time, bool) {
+	t, ok := v.(time.Time)
+	return t, ok
 }
 
 //浮点数近似相等

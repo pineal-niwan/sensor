@@ -1,5 +1,9 @@
 package base_type
 
+import (
+	"time"
+)
+
 //Map中是否包含了key
 func IsKeyInMap(m map[string]interface{}, k string) bool {
 	_, ok := m[k]
@@ -66,4 +70,13 @@ func ConvertMapVal2String(m map[string]interface{}, k string) string {
 		return ""
 	}
 	return Convert2String(x)
+}
+
+//将map中的value转换为time
+func ConvertMapVal2Time(m map[string]interface{}, k string) (time.Time, bool) {
+	x, ok := m[k]
+	if !ok {
+		return time.Time{}, false
+	}
+	return Convert2Time(x)
 }
