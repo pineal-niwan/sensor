@@ -75,7 +75,7 @@ func TestUnixNanoStamp_Value(t *testing.T) {
 
 func TestMarshalUnixStamp(t *testing.T) {
 	t1 := time.Now()
-	t2 := UnixStamp{Time:t1}
+	t2 := UnixStamp{Time: t1}
 	x1, err1 := json.Marshal(t1)
 	x2, err2 := json.Marshal(t2)
 

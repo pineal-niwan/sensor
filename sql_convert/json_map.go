@@ -1,6 +1,7 @@
 package sql_convert
 
 import (
+	"database/sql/driver"
 	"github.com/go-errors/errors"
 	"github.com/pineal-niwan/sensor/json"
 )
@@ -37,4 +38,24 @@ func (jsonMap *JsonMap) Scan(src interface{}) error {
 	default:
 		return ErrNotJsonSupportType
 	}
+}
+
+//写回数据库时的组装
+func (jsonMap *JsonMap) Value() (driver.Value, error) {
+	jsonValue, err := json.Marshal(jsonMap.Map)
+	if err != nil {
+		return "", err
+	}
+	return string(jsonValue), nil
+}
+
+//Json marshal
+func (jsonMap JsonMap) MarshalJSON() ([]byte, error) {
+	return json.Marshal(jsonMap.Map)
+}
+
+//Json marshal
+func (jsonMap *JsonMap) UnmarshalJSON(data []byte) error {
+	err := json.Unmarshal(data, &jsonMap.Map)
+	return err
 }
