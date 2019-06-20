@@ -42,6 +42,35 @@ func TestUnixStamp_Value(t *testing.T) {
 	}
 }
 
+func TestZeroUnixStamp_Value(t *testing.T) {
+	var unixStamp UnixStamp
+	var unixNanoStamp UnixNanoStamp
+
+	unixStampVal, _ := unixStamp.Value()
+	unixStampValue := unixStamp.Unix()
+	t.Logf("is zero:%+v", unixStamp.IsZero())
+	t.Logf("unix time:%+v unix stamp:%+v stamp:%+v", unixStamp.Time, unixStampVal, unixStampValue)
+
+	unixNanoStampVal, _ := unixNanoStamp.Value()
+	unixNanoStampValue := unixNanoStamp.UnixNano()
+	t.Logf("is zero:%+v", unixNanoStamp.IsZero())
+	t.Logf("unix time:%+v unix nano stamp:%+v stamp:%+v", unixNanoStamp.Time, unixNanoStampVal, unixNanoStampValue)
+
+	unixStamp = NewUnixZeroStamp()
+	unixNanoStamp = NewUnixNanoZeroStamp()
+
+	unixStampVal, _ = unixStamp.Value()
+	unixStampValue = unixStamp.Unix()
+	t.Logf("is zero:%+v", unixStamp.IsZero())
+	t.Logf("unix time:%+v unix stamp:%+v stamp:%+v", unixStamp.Time, unixStampVal, unixStampValue)
+
+	unixNanoStampVal, _ = unixNanoStamp.Value()
+	unixNanoStampValue = unixNanoStamp.UnixNano()
+	t.Logf("is zero:%+v", unixNanoStamp.IsZero())
+	t.Logf("unix time:%+v unix nano stamp:%+v stamp:%+v", unixNanoStamp.Time, unixNanoStampVal, unixNanoStampValue)
+
+}
+
 func TestUnixNanoStamp_Scan(t *testing.T) {
 	var unixNanoStamp UnixNanoStamp
 

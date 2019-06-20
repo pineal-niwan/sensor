@@ -9,6 +9,7 @@ import (
 
 var (
 	ErrTimestampIsNotInt64 = errors.New("time stamp is not int64")
+	_UnixZeroTimeStamp = time.Unix(0, 0)
 )
 
 //秒级的unix timestamp
@@ -19,6 +20,13 @@ type UnixStamp struct {
 //新建unix stamp
 func NewUnixStamp(t time.Time) UnixStamp {
 	return UnixStamp{t}
+}
+
+//新建zero值的timestamp
+func NewUnixZeroStamp() UnixStamp {
+	var unixStamp UnixStamp
+	unixStamp.Time = _UnixZeroTimeStamp
+	return unixStamp
 }
 
 //从数据库读取后组装
@@ -65,6 +73,14 @@ type UnixNanoStamp struct {
 func NewUnixNanoStamp(t time.Time) UnixNanoStamp {
 	return UnixNanoStamp{t}
 }
+
+//新建zero值的nano timestamp
+func NewUnixNanoZeroStamp() UnixNanoStamp {
+	var unixNanoStamp UnixNanoStamp
+	unixNanoStamp.Time = _UnixZeroTimeStamp
+	return unixNanoStamp
+}
+
 
 //从数据库读取后组装
 func (timestampNano *UnixNanoStamp) Scan(src interface{}) error {
