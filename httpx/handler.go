@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	GinLogger logger.Logger
+	GinLogger logger.ILogger
 	GinI18n   *i18n.LangStringGroup
 )
 
@@ -79,7 +79,7 @@ func newGinHandler(mode string) *gin.Engine {
 }
 
 //新建gin handler
-func NewGinHandler(mode string, ginLogger logger.Logger, prefix string, defaultLang string, i18nFiles ...string) (
+func NewGinHandler(mode string, ginLogger logger.ILogger, prefix string, defaultLang string, i18nFiles ...string) (
 	*gin.RouterGroup, error) {
 
 	//设置模式

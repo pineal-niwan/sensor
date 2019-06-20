@@ -20,7 +20,7 @@ type HashKeyWithTime struct {
 }
 
 //获取i18n中对应语言的翻译
-func GetLocale(c *gin.Context, i18n *i18n.LangStringGroup, key string, logger logger.Logger) string {
+func GetLocale(c *gin.Context, i18n *i18n.LangStringGroup, key string, logger logger.ILogger) string {
 	if i18n == nil {
 		logger.Error("i18n为空")
 		return key
@@ -53,7 +53,7 @@ func GetLocale(c *gin.Context, i18n *i18n.LangStringGroup, key string, logger lo
 }
 
 //设置post中的json请求数据
-func SetPostJsonDataFromReq(c *gin.Context, data interface{}, logger logger.Logger) {
+func SetPostJsonDataFromReq(c *gin.Context, data interface{}, logger logger.ILogger) {
 	err := c.BindJSON(data)
 	if err != nil {
 		ResponseBadRequest(c)
@@ -71,7 +71,7 @@ func GenJsonSchema(schema interface{}) (*gojsonschema.Schema, error) {
 }
 
 //设置post中的json请求数据并带json schema检查
-func SetPostJsonDataWithSchemaFromReq(c *gin.Context, schema *gojsonschema.Schema, logger logger.Logger) {
+func SetPostJsonDataWithSchemaFromReq(c *gin.Context, schema *gojsonschema.Schema, logger logger.ILogger) {
 	var data map[string]interface{}
 	err := c.BindJSON(&data)
 	if err != nil {

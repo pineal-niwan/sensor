@@ -38,7 +38,7 @@ func SetCookieCodec(hashKey string, blockKey string) error {
 }
 
 //获取session
-func GetSessionFromKey(c *gin.Context, key string, logger logger.Logger) (HashKeyWithTime, error) {
+func GetSessionFromKey(c *gin.Context, key string, logger logger.ILogger) (HashKeyWithTime, error) {
 	var sessionValue HashKeyWithTime
 	cookies, err := c.Request.Cookie(key)
 	if err != nil {

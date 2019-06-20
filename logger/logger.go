@@ -68,7 +68,7 @@ func ParseLevel(lvl string) (LogLevel, error) {
 	return l, fmt.Errorf("not a valid logrus Level: %q", lvl)
 }
 
-type Logger interface {
+type ILogger interface {
 	//获取打印级别
 	GetLevel() LogLevel
 	//设置打印级别
