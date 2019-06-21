@@ -4,28 +4,26 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-errors/errors"
-	"github.com/pineal-niwan/sensor/i18n"
 	"github.com/pineal-niwan/sensor/logger"
 	"net/http"
 	"net/http/httputil"
 	"time"
 )
 
-var (
-	GinLogger logger.ILogger
-	GinI18n   *i18n.LangStringGroup
-)
+func init() {
+	gin.SetMode(gin.ReleaseMode)
+}
 
-var (
-	//gin模式错误
-	ErrHttpXInvalidMode = errors.New("httpx invalid mode")
-	//没有设置logger
-	ErrHttpXLoggerNil = errors.New("nil httpx logger")
-)
+// gin handler结构体
+type GinHandler struct {
+	*gin.Engine
+	logger.ILogger
+	prefix string
+}
 
 //记录日志
-func Logger(c *gin.Context) {
-	if GinLogger.GetLevel() >= logger.InfoLevel {
+func (g *GinHandler) Logger(c *gin.Context) {
+	if g.ILogger.GetLevel() >= logger.InfoLevel {
 		start := time.Now()
 		path := c.Request.URL.Path
 
@@ -40,7 +38,7 @@ func Logger(c *gin.Context) {
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
 
-		GinLogger.Infof("[GIN] %v | %3d | %13v | %s |%s  %s",
+		g.ILogger.Infof("[GIN] %v | %3d | %13v | %s |%s  %s",
 			end.Format("2006/01/02 - 15:04:05"),
 			statusCode,
 			latency,
@@ -52,7 +50,7 @@ func Logger(c *gin.Context) {
 }
 
 //恢复
-func Recovery(c *gin.Context) {
+func (g *GinHandler) Recovery(c *gin.Context) {
 	defer func() {
 		if err := recover(); err != nil {
 			httprequest, _ := httputil.DumpRequest(c.Request, false)
@@ -60,57 +58,66 @@ func Recovery(c *gin.Context) {
 			reset := string([]byte{27, 91, 48, 109})
 			errMsg := fmt.Sprintf("[Nice Recovery] panic recovered:\n\n%s%s\n\n%s%s",
 				httprequest, goErr.Error(), goErr.Stack(), reset)
-			GinLogger.Errorf(errMsg)
+			g.ILogger.Errorf(errMsg)
 			//回调
 			c.AbortWithStatus(http.StatusInternalServerError)
 		}
-
 	}()
 	c.Next()
 }
 
 //新建gin handler
-func newGinHandler(mode string) *gin.Engine {
-	gin.SetMode(mode)
-	handler := gin.New()
-	handler.Use(Logger)
-	handler.Use(Recovery)
-	return handler
+func NewGinHandler(iLogger ...logger.ILogger) *GinHandler {
+	var ginLogger logger.ILogger
+
+	if len(iLogger) == 0 {
+		ginLogger = logger.DefaultLogger
+	} else {
+		ginLogger = iLogger[0]
+		if ginLogger == nil {
+			ginLogger = logger.DefaultLogger
+		}
+	}
+
+	ginHandler := &GinHandler{
+		Engine:  gin.New(),
+		ILogger: ginLogger,
+	}
+	ginHandler.Use(ginHandler.Logger)
+	ginHandler.Use(ginHandler.Recovery)
+	return ginHandler
 }
 
-//新建gin handler
-func NewGinHandler(mode string, ginLogger logger.ILogger, prefix string, defaultLang string, i18nFiles ...string) (
-	*gin.RouterGroup, error) {
+//添加前缀
+func (g *GinHandler) SetPrefix(prefix string) {
+	g.prefix = prefix
+}
 
-	//设置模式
-	if mode != gin.DebugMode && mode != gin.ReleaseMode && mode != gin.TestMode {
-		return nil, ErrHttpXInvalidMode
-	}
+//带logger的http处理函数
+type HandleGinUrlFunc func(c *gin.Context, iLogger logger.ILogger)
 
-	//设置翻译
-	GinI18n := &i18n.LangStringGroup{}
-	GinI18n.Init(defaultLang)
-	defaultI18nConfig, err := i18n.LoadI18nConfigFromTomlBuffer([]byte(DefaultI18nTomlConfig))
-	if err != nil {
-		return nil, err
-	}
-	GinI18n.ConfigBy(defaultI18nConfig)
-	for _, i18nFile := range i18nFiles {
-		i18nConfig, err := i18n.LoadI18nConfigFromYamlFile(i18nFile)
-		if err != nil {
-			return nil, err
+//利用闭包，转换handler函数，加入logger支持
+func (g *GinHandler) convertHandler(handlerList []HandleGinUrlFunc) []gin.HandlerFunc {
+	chainLen := len(handlerList)
+	ginHandlerFuncList := make([]gin.HandlerFunc, chainLen)
+	for i := 0; i < chainLen; i++ {
+		ginHandlerFuncList[i] = func(c *gin.Context) {
+			handlerList[i](c, g.ILogger)
 		}
-		GinI18n.ConfigBy(i18nConfig)
 	}
+	return ginHandlerFuncList
+}
 
-	//设置logger
-	if ginLogger == nil {
-		return nil, ErrHttpXLoggerNil
-	}
-	GinLogger = ginLogger
+//添加GET处理函数
+func (g *GinHandler) GET(url string, handlerList ...HandleGinUrlFunc) {
+	groupGin := g.Group(g.prefix)
+	ginHandlerFuncList := g.convertHandler(handlerList)
+	groupGin.GET(url, ginHandlerFuncList...)
+}
 
-	//设置handler及url前缀
-	handler := newGinHandler(mode)
-	handlerGrp := handler.Group(prefix)
-	return handlerGrp, nil
+//添加POST处理函数
+func (g *GinHandler) POST(url string, handlerList ...HandleGinUrlFunc) {
+	groupGin := g.Group(g.prefix)
+	ginHandlerFuncList := g.convertHandler(handlerList)
+	groupGin.POST(url, ginHandlerFuncList...)
 }

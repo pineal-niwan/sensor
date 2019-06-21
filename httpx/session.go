@@ -38,17 +38,17 @@ func SetCookieCodec(hashKey string, blockKey string) error {
 }
 
 //获取session
-func GetSessionFromKey(c *gin.Context, key string, logger logger.ILogger) (HashKeyWithTime, error) {
+func GetSessionFromKey(c *gin.Context, iLogger logger.ILogger, key string) (HashKeyWithTime, error) {
 	var sessionValue HashKeyWithTime
 	cookies, err := c.Request.Cookie(key)
 	if err != nil {
-		logger.Errorf("获取session key失败:%+v", err)
+		iLogger.Errorf("获取session key失败:%+v", err)
 		return sessionValue, err
 	}
 
 	sessionValue, err = decodeSession(key, cookies.Value)
 	if err != nil {
-		logger.Errorf("解码ession key失败:%+v", err)
+		iLogger.Errorf("解码ession key失败:%+v", err)
 		return sessionValue, err
 	}
 	return sessionValue, err

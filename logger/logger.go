@@ -98,3 +98,7 @@ type ILogger interface {
 	Fatalln(args ...interface{})
 	Panicln(args ...interface{})
 }
+
+var (
+	DefaultLogger = NewLogrusLogger()
+)

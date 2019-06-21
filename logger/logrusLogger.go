@@ -4,16 +4,19 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-var (
-	//缺省的logrus logger
-	DefaultLogrusLogger = &LogrusLogger{}
-)
+type LogrusLogger struct {
+	*logrus.Logger
+}
 
-type LogrusLogger struct{}
+func NewLogrusLogger() *LogrusLogger {
+	return &LogrusLogger{
+		Logger: logrus.New(),
+	}
+}
 
 //获取打印级别
 func (l *LogrusLogger) GetLevel() LogLevel {
-	return LogLevel(logrus.GetLevel())
+	return LogLevel(l.Logger.GetLevel())
 }
 
 //设置打印级别
@@ -22,90 +25,90 @@ func (l *LogrusLogger) SetLevel(level string) error {
 	if err != nil {
 		return err
 	}
-	logrus.SetLevel(logrus.Level(logLevel))
+	l.Logger.SetLevel(logrus.Level(logLevel))
 	return nil
 }
 
 func (l *LogrusLogger) Debugf(format string, args ...interface{}) {
-	logrus.Debugf(format, args...)
+	l.Debugf(format, args...)
 }
 
 func (l *LogrusLogger) Infof(format string, args ...interface{}) {
-	logrus.Infof(format, args...)
+	l.Infof(format, args...)
 }
 
 func (l *LogrusLogger) Printf(format string, args ...interface{}) {
-	logrus.Printf(format, args...)
+	l.Printf(format, args...)
 }
 
 func (l *LogrusLogger) Warnf(format string, args ...interface{}) {
-	logrus.Warnf(format, args...)
+	l.Warnf(format, args...)
 }
 
 func (l *LogrusLogger) Errorf(format string, args ...interface{}) {
-	logrus.Errorf(format, args...)
+	l.Errorf(format, args...)
 }
 
 func (l *LogrusLogger) Fatalf(format string, args ...interface{}) {
-	logrus.Fatalf(format, args...)
+	l.Fatalf(format, args...)
 }
 
 func (l *LogrusLogger) Panicf(format string, args ...interface{}) {
-	logrus.Panicf(format, args...)
+	l.Panicf(format, args...)
 }
 
 func (l *LogrusLogger) Debug(args ...interface{}) {
-	logrus.Debug(args...)
+	l.Debug(args...)
 }
 
 func (l *LogrusLogger) Info(args ...interface{}) {
-	logrus.Info(args...)
+	l.Info(args...)
 }
 
 func (l *LogrusLogger) Print(args ...interface{}) {
-	logrus.Print(args...)
+	l.Print(args...)
 }
 
 func (l *LogrusLogger) Warn(args ...interface{}) {
-	logrus.Warn(args...)
+	l.Warn(args...)
 }
 
 func (l *LogrusLogger) Error(args ...interface{}) {
-	logrus.Error(args...)
+	l.Error(args...)
 }
 
 func (l *LogrusLogger) Fatal(args ...interface{}) {
-	logrus.Fatal(args...)
+	l.Fatal(args...)
 }
 
 func (l *LogrusLogger) Panic(args ...interface{}) {
-	logrus.Panic(args...)
+	l.Panic(args...)
 }
 
 func (l *LogrusLogger) Debugln(args ...interface{}) {
-	logrus.Debugln(args...)
+	l.Debugln(args...)
 }
 
 func (l *LogrusLogger) Infoln(args ...interface{}) {
-	logrus.Infoln(args...)
+	l.Infoln(args...)
 }
 
 func (l *LogrusLogger) Println(args ...interface{}) {
-	logrus.Println(args...)
+	l.Println(args...)
 }
 
 func (l *LogrusLogger) Warnln(args ...interface{}) {
-	logrus.Warnln(args...)
+	l.Warnln(args...)
 }
 
 func (l *LogrusLogger) Errorln(args ...interface{}) {
-	logrus.Errorln(args...)
+	l.Errorln(args...)
 }
 
 func (l *LogrusLogger) Fatalln(args ...interface{}) {
-	logrus.Fatalln(args...)
+	l.Fatalln(args...)
 }
 
 func (l *LogrusLogger) Panicln(args ...interface{}) {
-	logrus.Panicln(args...)
+	l.Panicln(args...)
 }

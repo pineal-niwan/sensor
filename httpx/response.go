@@ -15,19 +15,19 @@ const (
 )
 
 const (
-	BadRequestMsg     = `common.badrequest`
-	SessionFailMsg    = `common.sessionfail`
-	PermissionDenyMsg = `common.permissiondeny`
+	BadRequestMsg     = `common.badRequest`
+	SessionFailMsg    = `common.sessionFail`
+	PermissionDenyMsg = `common.permissionDeny`
 	NotFoundMsg       = `common.notfound`
 
-	ServerFailMsg = `common.serverfail`
+	ServerFailMsg = `common.serverFail`
 )
 
 //回应错误的参数请求
 func ResponseBadRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": BadRequestCode,
-		"errMsg": GetLocale(c, GinI18n, BadRequestMsg, GinLogger),
+		"errMsg": BadRequestMsg,
 	})
 }
 
@@ -35,7 +35,7 @@ func ResponseBadRequest(c *gin.Context) {
 func ResponseNeedLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": SessionFailCode,
-		"errMsg": GetLocale(c, GinI18n, SessionFailMsg, GinLogger),
+		"errMsg": SessionFailMsg,
 	})
 }
 
@@ -43,7 +43,7 @@ func ResponseNeedLogin(c *gin.Context) {
 func ResponsePermissionDeny(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": PermissionDenyCode,
-		"errMsg": GetLocale(c, GinI18n, PermissionDenyMsg, GinLogger),
+		"errMsg": PermissionDenyMsg,
 	})
 }
 
@@ -51,7 +51,7 @@ func ResponsePermissionDeny(c *gin.Context) {
 func ResponseNotFound(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": NotFoundCode,
-		"errMsg": GetLocale(c, GinI18n, NotFoundMsg, GinLogger),
+		"errMsg": NotFoundMsg,
 	})
 }
 
@@ -59,7 +59,7 @@ func ResponseNotFound(c *gin.Context) {
 func ResponseInternalError(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"result": ServerFailCode,
-		"errMsg": GetLocale(c, GinI18n, ServerFailMsg, GinLogger),
+		"errMsg": ServerFailMsg,
 	})
 }
 
