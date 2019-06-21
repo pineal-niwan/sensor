@@ -224,18 +224,11 @@ func (c *LruHash) IterateThenRemove(f func(key string, value interface{})) {
 	c.iterateThenRemove(f)
 }
 
-//公共函数-长度
-func (c *LruHash) Len() int {
+//公共函数-长度 包括 hash长度和list长度
+func (c *LruHash) Len() (hashLen int, listLen int) {
 	c.RLock()
 	defer c.RUnlock()
-	l := c.elementList.Len()
-	return l
-}
-
-//公共函数-hash长度
-func (c *LruHash) HashLen() int {
-	c.RLock()
-	defer c.RUnlock()
-	l := len(c.elementHash)
-	return l
+	hashLen = len(c.elementHash)
+	listLen = c.elementList.Len()
+	return
 }
