@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"errors"
+	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/pineal-niwan/sensor/key_value_server/pb"
 	"google.golang.org/grpc"
 	"sync"
@@ -11,8 +12,6 @@ import (
 
 var (
 	ErrClientNotReady = errors.New(`client not ready`)
-
-	RetEmptyBytes = make([]byte, 0)
 )
 
 type KClient struct {
@@ -47,7 +46,7 @@ func (c *KClient) Close() error {
 }
 
 //连接
-func (c *KClient) Dial(url string, timeout time.Duration, maxBackOff time.Duration) error {
+func (c *KClient) Dial(timeout time.Duration, maxBackOff time.Duration) error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -99,27 +98,75 @@ func (c *KClient) SetWithTimeout(ctx context.Context, key string, value []byte, 
 
 // 获取缓存
 func (c *KClient) Get(ctx context.Context, key string) ([]byte, error) {
-	var buff []byte
-
 	c.RLock()
 	defer c.RUnlock()
 
 	if c.client == nil {
-		return RetEmptyBytes, ErrClientNotReady
+		return nil, ErrClientNotReady
 	}
 	msgValue, err := c.client.Get(ctx, &pb.MsgKey{
 		Key: key,
 	})
 
 	if err != nil {
-		return RetEmptyBytes, err
+		return nil, err
 	}
 
 	if msgValue.Ok {
-		buff = msgValue.Value
+		return msgValue.Value, nil
 	} else {
-		buff = RetEmptyBytes
+		return nil, nil
+	}
+}
+
+// 获取缓存后刷新
+func (c *KClient) GetThenRefresh(ctx context.Context, key string, timeout int64) ([]byte, error) {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return nil, ErrClientNotReady
+	}
+	msgValue, err := c.client.GetThenRefresh(ctx, &pb.MsgKeyTimeout{
+		Timeout: timeout,
+		Key:     key,
+	})
+
+	if err != nil {
+		return nil, err
 	}
 
-	return buff, err
+	if msgValue.Ok {
+		return msgValue.Value, nil
+	} else {
+		return nil, nil
+	}
+}
+
+// 获取缓存长度
+func (c *KClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return 0, 0, ErrClientNotReady
+	}
+	msgLen, err := c.client.GetLen(ctx, &empty.Empty{})
+
+	if err != nil {
+		return 0, 0, err
+	}
+	return int(msgLen.HashLen), int(msgLen.ListLen), nil
+}
+
+// 清空缓存
+func (c *KClient) Clear(ctx context.Context) error {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return ErrClientNotReady
+	}
+	_, err := c.client.Clear(ctx, &empty.Empty{})
+	return err
 }
