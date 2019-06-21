@@ -90,13 +90,13 @@ func NewGinHandler(mode string, ginLogger logger.ILogger, prefix string, default
 	//设置翻译
 	GinI18n := &i18n.LangStringGroup{}
 	GinI18n.Init(defaultLang)
-	defaultI18nConfig, err := i18n.LoadI18nConfigFromBuffer([]byte(DefaultI18nConfig))
+	defaultI18nConfig, err := i18n.LoadI18nConfigFromTomlBuffer([]byte(DefaultI18nTomlConfig))
 	if err != nil {
 		return nil, err
 	}
 	GinI18n.ConfigBy(defaultI18nConfig)
 	for _, i18nFile := range i18nFiles {
-		i18nConfig, err := i18n.LoadI18nConfigFromFile(i18nFile)
+		i18nConfig, err := i18n.LoadI18nConfigFromYamlFile(i18nFile)
 		if err != nil {
 			return nil, err
 		}

@@ -1,7 +1,7 @@
 package httpx
 
 import (
-	"pineal/sensor/cypher"
+	"github.com/pineal-niwan/sensor/cypher"
 	"testing"
 	"time"
 )
