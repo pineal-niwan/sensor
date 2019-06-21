@@ -32,6 +32,7 @@ type SnowFlakeNode struct {
 func (n *SnowFlakeNode) Generate(nodeId uint8) int64 {
 
 	n.mu.Lock()
+	defer n.mu.Unlock()
 
 	now := time.Now().UnixNano() / 1000000
 
@@ -52,6 +53,5 @@ func (n *SnowFlakeNode) Generate(nodeId uint8) int64 {
 	//前面的位数是时间戳，中间为node，最后为step值
 	r := (now-_Epoch)<<_TimeShift | (int64(nodeId) << _StepBits) | n.step
 
-	n.mu.Unlock()
 	return r
 }

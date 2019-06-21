@@ -3,6 +3,7 @@ package hash
 import (
 	"container/list"
 	"sync"
+	"time"
 )
 
 //LRU hash -- 最近最久没使用算法的哈希
@@ -16,8 +17,9 @@ type LruHash struct {
 
 //线索化的元素
 type _ElementInfo struct {
-	key   string
-	value interface{}
+	key       string      //键
+	value     interface{} //值
+	timestamp int64       //unix stamp -- 以毫秒计数
 }
 
 //新建，指定了hash容量大小
@@ -31,11 +33,10 @@ func NewLruHash(size int) *LruHash {
 }
 
 //移除指定的节点
-func (c *LruHash) removeNode(elementNode *list.Element) {
+func (c *LruHash) removeNode(elementNode *list.Element, elementInfo *_ElementInfo) {
 	if elementNode != nil {
 		//从list中移除
 		c.elementList.Remove(elementNode)
-		elementInfo := elementNode.Value.(*_ElementInfo)
 		//从hash中移除
 		delete(c.elementHash, elementInfo.key)
 	}
@@ -44,7 +45,8 @@ func (c *LruHash) removeNode(elementNode *list.Element) {
 //移除末尾的元素
 func (c *LruHash) removeTail() {
 	elementNode := c.elementList.Back()
-	c.removeNode(elementNode)
+	element := elementNode.Value.(*_ElementInfo)
+	c.removeNode(elementNode, element)
 }
 
 //删除key
@@ -52,25 +54,34 @@ func (c *LruHash) remove(key string) (value interface{}, ok bool) {
 	var elementNode *list.Element
 	elementNode, ok = c.elementHash[key]
 	if ok {
-		value = elementNode.Value.(*_ElementInfo).value
-		c.removeNode(elementNode)
+		element := elementNode.Value.(*_ElementInfo)
+		value = element.value
+		c.removeNode(elementNode, element)
 	}
 	return
 }
 
 //设置
 func (c *LruHash) set(key string, value interface{}) {
+	c.setWithTimestamp(key, value, 0)
+}
+
+//设置 - 带时间参数 - timestamp以毫秒计
+func (c *LruHash) setWithTimestamp(key string, value interface{}, timestamp int64) {
 	elementNode, ok := c.elementHash[key]
+
 	if ok {
 		//已经有此元素，只需要刷新
 		//将设置的元素移动到最前面
-		elementNode.Value.(*_ElementInfo).value = value
+		element := elementNode.Value.(*_ElementInfo)
+		element.value = value
+		element.timestamp = timestamp
 		c.elementList.MoveToFront(elementNode)
 		return
 	}
 
 	//没有此元素，需要加入到list和hash中，list加最前面
-	elementInfo := &_ElementInfo{key, value}
+	elementInfo := &_ElementInfo{key, value, timestamp}
 	elementNode = c.elementList.PushFront(elementInfo)
 	c.elementHash[key] = elementNode
 
@@ -85,8 +96,46 @@ func (c *LruHash) get(key string) (value interface{}, ok bool) {
 	var elementNode *list.Element
 	elementNode, ok = c.elementHash[key]
 	if ok {
-		value = elementNode.Value.(*_ElementInfo).value
-		//如果元素存在，需要将其移动到list头部
+		element := elementNode.Value.(*_ElementInfo)
+		timestamp := element.timestamp
+		value = element.value
+		if timestamp > 0 {
+			//需要检查timeout
+			nowMilUnixStamp := time.Now().UnixNano() / int64(time.Millisecond)
+			if timestamp < nowMilUnixStamp {
+				//已经超时
+				c.removeNode(elementNode, element)
+				ok = false
+				return
+			}
+		}
+		//将其移动到list头部
+		c.elementList.MoveToFront(elementNode)
+	}
+	return
+}
+
+//获取并刷新timestamp - timestamp以毫秒计
+func (c *LruHash) getThenRefreshTimestamp(key string, nowTimestamp int64, newTimestamp int64) (
+	value interface{}, ok bool) {
+
+	var elementNode *list.Element
+	elementNode, ok = c.elementHash[key]
+	if ok {
+		element := elementNode.Value.(*_ElementInfo)
+		timestamp := element.timestamp
+		value = element.value
+		if timestamp > 0 {
+			//需要检查timeout
+			if timestamp < nowTimestamp {
+				//已经超时
+				c.removeNode(elementNode, element)
+				ok = false
+				return
+			}
+		}
+		element.timestamp = newTimestamp
+		//将其移动到list头部
 		c.elementList.MoveToFront(elementNode)
 	}
 	return
@@ -108,66 +157,85 @@ func (c *LruHash) iterateThenRemove(f func(key string, value interface{})) {
 	for lastNode := c.elementList.Back(); lastNode != nil; lastNode = lastNode.Prev() {
 		elementInfo := lastNode.Value.(*_ElementInfo)
 		f(elementInfo.key, elementInfo.value)
-		c.removeNode(lastNode)
+		c.removeNode(lastNode, elementInfo)
 	}
 }
 
 //公共函数-获取
 func (c *LruHash) Get(key string) (value interface{}, ok bool) {
 	c.Lock()
+	defer c.Unlock()
 	value, ok = c.get(key)
-	c.Unlock()
+	return
+}
+
+//公共函数-获取并刷新timeout -- timeout以ms计
+func (c *LruHash) GetThenRefreshTimeout(key string, timeout int64) (value interface{}, ok bool) {
+	nowTimeStamp := time.Now().UnixNano() / int64(time.Millisecond)
+	newTimeStamp := nowTimeStamp + timeout
+	c.Lock()
+	defer c.Unlock()
+	value, ok = c.getThenRefreshTimestamp(key, nowTimeStamp, newTimeStamp)
 	return
 }
 
 //公共函数-设置
 func (c *LruHash) Set(key string, value interface{}) {
 	c.Lock()
+	defer c.Unlock()
 	c.set(key, value)
-	c.Unlock()
+}
+
+//公共函数-设置-带超时 -- timeout以ms计
+func (c *LruHash) SetWithTimeout(key string, value interface{}, timeout int64) {
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+	timestamp += timeout
+	c.Lock()
+	defer c.Unlock()
+	c.setWithTimestamp(key, value, timestamp)
 }
 
 //公共函数-删除
 func (c *LruHash) Remove(key string) (value interface{}, ok bool) {
 	c.Lock()
+	defer c.Unlock()
 	value, ok = c.remove(key)
-	c.Unlock()
 	return
 }
 
 //公共函数-移除末尾的元素--最近最久没使用
 func (c *LruHash) RemoveTail() {
 	c.Lock()
+	defer c.Unlock()
 	c.removeTail()
-	c.Unlock()
 }
 
 //公共函数-清除
 func (c *LruHash) Clear() {
 	c.Lock()
+	defer c.Unlock()
 	c.clear()
-	c.Unlock()
 }
 
 //公共函数-清仓遍历处理
 func (c *LruHash) IterateThenRemove(f func(key string, value interface{})) {
 	c.Lock()
+	defer c.Unlock()
 	c.iterateThenRemove(f)
-	c.Unlock()
 }
 
 //公共函数-长度
 func (c *LruHash) Len() int {
 	c.RLock()
+	defer c.RUnlock()
 	l := c.elementList.Len()
-	c.RUnlock()
 	return l
 }
 
 //公共函数-hash长度
 func (c *LruHash) HashLen() int {
 	c.RLock()
+	defer c.RUnlock()
 	l := len(c.elementHash)
-	c.RUnlock()
 	return l
 }

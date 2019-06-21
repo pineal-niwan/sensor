@@ -34,6 +34,7 @@ type SnowFlakeSpecNode struct {
 func (n *SnowFlakeSpecNode) Generate(outId int64) int64 {
 
 	n.mu.Lock()
+	defer n.mu.Unlock()
 
 	now := time.Now().UnixNano() / 1000000
 
@@ -54,6 +55,5 @@ func (n *SnowFlakeSpecNode) Generate(outId int64) int64 {
 	//前面的位数是时间戳，中间为step，最后为外部传入数据以64k为基础计算的hash值
 	r := ((now - _Epoch) << _SpecTimeShift) | (n.step << _SpecStepShift) | (outId % _SpecHashBase)
 
-	n.mu.Unlock()
 	return r
 }
