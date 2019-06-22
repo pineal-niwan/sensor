@@ -5,101 +5,166 @@ import (
 	"gopkg.in/urfave/cli.v1/altsrc"
 )
 
+const (
+	/*--- common flag -----*/
+	NameAddress             = `address`
+	NameLogLevel            = `logLevel`
+	NameLoadConfigFile      = `loadConfigFile`
+	NamePProfAddress        = `pProfAddress`
+	NameSessionCacheAddress = `sessionCacheAddress`
+
+	/*----database flag -----*/
+	NameDbAddress      = `dbAddress`
+	NameDbUser         = `dbUser`
+	NameDbPass         = `dbPass`
+	NameDbMaxLifeTime  = `dbMaxLifeTime`
+	NameDbMaxPoolSize  = `dbMaxPoolSize`
+	NameDbIdlePoolSize = `dbIdlePoolSize`
+
+	/*--- key value server flag ----*/
+	NameKeyServerAddress = `keyServerAddress`
+
+	/*--- http server flag ---*/
+	NameHttpAddress           = `httpAddress`
+	NameHttpUrlPrefix         = `httpUrlPrefix`
+	NameJsonSchemaFile        = `jsonSchemaFile`
+	NameInternalHttpAddress   = `internalHttpAddress`
+	NameInternalHttpUrlPrefix = `internalHttpUrlPrefix`
+
+	/*---- gRpc flag -----*/
+	NameGRpcMaxBackOff = `gRpcMaxBackOff`
+)
+
 var (
 
 	/*--- common flag -----*/
 
 	AddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `address`,
+		Name:  NameAddress,
 		Usage: `server listen address`,
 	})
 
 	LogLevelFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `logLevel`,
+		Name:  NameLogLevel,
 		Usage: `log level - debug/warn/info/error`,
 	})
 
 	LoadConfigFileFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `loadConfigFile`,
+		Name:  NameLoadConfigFile,
 		Usage: `load configuration file for command param`,
 	})
 
 	PProfAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `pProfAddress`,
+		Name:  NamePProfAddress,
 		Usage: `pProf address`,
+	})
+
+	SessionCacheAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
+		Name:  NameSessionCacheAddress,
+		Usage: `session cache server address`,
 	})
 
 	/*----database flag -----*/
 
 	DbAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `dbAddress`,
+		Name:  NameDbAddress,
 		Usage: `database address`,
 	})
 
 	DbUserFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `dbUser`,
+		Name:  NameDbUser,
 		Usage: `database user`,
 	})
 
 	DbPassFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `dbPass`,
+		Name:  NameDbPass,
 		Usage: `encrypt password`,
 	})
 
 	DbMaxLifeTimeFlag = altsrc.NewInt64Flag(cli.Int64Flag{
-		Name: `dbMaxLifeTime`,
+		Name: NameDbMaxLifeTime,
 		Usage: `database connection max unused life time(second),
 				if timeout, the connection will be dropped form pool.`,
 	})
 
 	DbMaxPoolSizeFlag = altsrc.NewIntFlag(cli.IntFlag{
-		Name:  `dbMaxPoolSize`,
+		Name:  NameDbMaxPoolSize,
 		Usage: `max connection pool size of database`,
 	})
 
 	DbIdlePoolSizeFlag = altsrc.NewIntFlag(cli.IntFlag{
-		Name:  `dbIdlePoolSize`,
+		Name:  NameDbIdlePoolSize,
 		Usage: `max idle connection number of db connection pool`,
 	})
 
 	/*--- key value server flag ----*/
 
 	KeyValueAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `keyServerAddress`,
+		Name:  NameKeyServerAddress,
 		Usage: `key - value server address`,
 	})
 
 	/*--- http server flag ---*/
 
 	HttpAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `httpAddress`,
+		Name:  NameHttpAddress,
 		Usage: `http server address`,
 	})
 
 	HttpUrlPrefixFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `httpUrlPrefix`,
+		Name:  NameHttpUrlPrefix,
 		Usage: `http url prefix`,
 	})
 
 	JsonSchemaFileFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `jsonSchemaFile`,
+		Name:  NameJsonSchemaFile,
 		Usage: `json schema file`,
 	})
 
 	InternalHttpAddressFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `internalHttpAddress`,
+		Name:  NameInternalHttpAddress,
 		Usage: `internal http server address`,
 	})
 
 	InternalHttpUrlPrefixFlag = altsrc.NewStringFlag(cli.StringFlag{
-		Name:  `internalHttpUrlPrefix`,
+		Name:  NameInternalHttpUrlPrefix,
 		Usage: `internal http url prefix`,
 	})
 
 	/*---- gRpc flag -----*/
 
 	GRPCMaxBackOffFlag = altsrc.NewInt64Flag(cli.Int64Flag{
-		Name:  `gRpcMaxBackOff`,
+		Name:  NameGRpcMaxBackOff,
 		Usage: `max back off time(ms) for grpc reconnect`,
 	})
+)
+
+var (
+	/*--- common flag -----*/
+	GetAddress             = func(c *cli.Context) string { return c.String(NameAddress) }
+	GetLogLevel            = func(c *cli.Context) string { return c.String(NameLogLevel) }
+	GetLoadConfigFile      = func(c *cli.Context) string { return c.String(NameLoadConfigFile) }
+	GetPProfAddress        = func(c *cli.Context) string { return c.String(NamePProfAddress) }
+	GetSessionCacheAddress = func(c *cli.Context) string { return c.String(NameSessionCacheAddress) }
+
+	/*----database flag -----*/
+	GetDbAddress      = func(c *cli.Context) string { return c.String(NameDbAddress) }
+	GetDbUser         = func(c *cli.Context) string { return c.String(NameDbUser) }
+	GetDbPass         = func(c *cli.Context) string { return c.String(NameDbPass) }
+	GetDbMaxLifeTime  = func(c *cli.Context) int64 { return c.Int64(NameDbMaxLifeTime) }
+	GetDbMaxPoolSize  = func(c *cli.Context) int { return c.Int(NameDbMaxPoolSize) }
+	GetDbIdlePoolSize = func(c *cli.Context) int { return c.Int(NameDbIdlePoolSize) }
+
+	/*--- key value server flag ----*/
+	GetKeyServerAddress = func(c *cli.Context) string { return c.String(NameKeyServerAddress) }
+
+	/*--- http server flag ---*/
+	GetHttpAddress           = func(c *cli.Context) string { return c.String(NameHttpAddress) }
+	GetHttpUrlPrefix         = func(c *cli.Context) string { return c.String(NameHttpUrlPrefix) }
+	GetJsonSchemaFile        = func(c *cli.Context) string { return c.String(NameJsonSchemaFile) }
+	GetInternalHttpAddress   = func(c *cli.Context) string { return c.String(NameInternalHttpAddress) }
+	GetInternalHttpUrlPrefix = func(c *cli.Context) string { return c.String(NameInternalHttpUrlPrefix) }
+
+	/*---- gRpc flag -----*/
+	GetGRpcMaxBackOff = func(c *cli.Context) int64 { return c.Int64(NameGRpcMaxBackOff) }
 )
