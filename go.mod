@@ -6,7 +6,6 @@ require (
 	github.com/go-errors/errors v1.0.1
 	github.com/go-yaml/yaml v2.1.0+incompatible
 	github.com/golang/protobuf v1.3.1
-	github.com/google/martian v2.1.0+incompatible
 	github.com/gorilla/securecookie v1.1.1
 	github.com/jinzhu/gorm v1.9.8
 	github.com/json-iterator/go v1.1.6
@@ -15,4 +14,5 @@ require (
 	github.com/urfave/cli v1.20.0
 	github.com/xeipuuv/gojsonschema v1.1.0
 	google.golang.org/grpc v1.21.1
+	gopkg.in/urfave/cli.v1 v1.20.0 // indirect
 )

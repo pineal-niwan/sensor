@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/empty.proto";
+
+//key
+message MsgKey {
+    string key = 1;
+}
+
+//value
+message MsgValue {
+    bool ok = 1;
+    bytes value = 2;
+}
+
+//key - value
+message MsgKeyValue {
+    string key = 1;
+    bytes value = 2;
+}
+
+//key - value - timeout
+message MsgKeyValueTimeout {
+    int64 timeout = 1;
+    string key = 2;
+    bytes value = 3;
+}
+
+//key - timeout
+message MsgKeyTimeout {
+    int64 timeout = 1;
+    string key = 2;
+}
+
+//长度
+message MsgLen {
+    int32 hashLen = 1;
+    int32 listLen = 2;
+}
+
+service KeyValueService {
+    //设置缓存
+    rpc Set (MsgKeyValue) returns (google.protobuf.Empty);
+    //设置缓存-带超时
+    rpc SetWithTimeout (MsgKeyValueTimeout) returns (google.protobuf.Empty);
+    //获取缓存
+    rpc Get (MsgKey) returns (MsgValue);
+    //获取缓存后刷新
+    rpc GetThenRefresh (MsgKeyTimeout) returns (MsgValue);
+    //获取缓存长度
+    rpc GetLen (google.protobuf.Empty) returns (MsgLen);
+    //清空缓存
+    rpc Clear (google.protobuf.Empty) returns (google.protobuf.Empty);
+}

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-errors/errors"
+	"github.com/jinzhu/gorm"
+	"github.com/pineal-niwan/sensor/cache"
 	"github.com/pineal-niwan/sensor/logger"
 	"net/http"
 	"net/http/httputil"
@@ -67,16 +69,13 @@ func (g *GinHandler) Recovery(c *gin.Context) {
 }
 
 //新建gin handler
-func NewGinHandler(iLogger ...logger.ILogger) *GinHandler {
+func NewGinHandler(iLogger logger.ILogger) *GinHandler {
 	var ginLogger logger.ILogger
 
-	if len(iLogger) == 0 {
+	if iLogger == nil {
 		ginLogger = logger.DefaultLogger
 	} else {
-		ginLogger = iLogger[0]
-		if ginLogger == nil {
-			ginLogger = logger.DefaultLogger
-		}
+		ginLogger = iLogger
 	}
 
 	ginHandler := &GinHandler{
@@ -117,6 +116,51 @@ func (g *GinHandler) GET(url string, handlerList ...HandleGinUrlFunc) {
 
 //添加POST处理函数
 func (g *GinHandler) POST(url string, handlerList ...HandleGinUrlFunc) {
+	groupGin := g.Group(g.prefix)
+	ginHandlerFuncList := g.convertHandler(handlerList)
+	groupGin.POST(url, ginHandlerFuncList...)
+}
+
+// gin handler带cache service和db
+type GinDataHandler struct {
+	*GinHandler
+	db          *gorm.DB
+	cacheClient cache.ICacheClient
+}
+
+//新建
+func NewGinDataHandler(db *gorm.DB, cacheClient cache.ICacheClient, iLogger logger.ILogger) *GinDataHandler {
+	ginDataHandler := &GinDataHandler{}
+	ginDataHandler.GinHandler = NewGinHandler(iLogger)
+	ginDataHandler.db = db
+	ginDataHandler.cacheClient = cacheClient
+	return ginDataHandler
+}
+
+//带logger的http处理函数
+type HandleGinDataUrlFunc func(c *gin.Context, db *gorm.DB, cacheClient cache.ICacheClient, iLogger logger.ILogger)
+
+//利用闭包，转换handler函数，加入logger支持
+func (g *GinDataHandler) convertHandler(handlerList []HandleGinDataUrlFunc) []gin.HandlerFunc {
+	chainLen := len(handlerList)
+	ginHandlerFuncList := make([]gin.HandlerFunc, chainLen)
+	for i := 0; i < chainLen; i++ {
+		ginHandlerFuncList[i] = func(c *gin.Context) {
+			handlerList[i](c, g.db, g.cacheClient, g.ILogger)
+		}
+	}
+	return ginHandlerFuncList
+}
+
+//添加GET处理函数
+func (g *GinDataHandler) GET(url string, handlerList ...HandleGinDataUrlFunc) {
+	groupGin := g.Group(g.prefix)
+	ginHandlerFuncList := g.convertHandler(handlerList)
+	groupGin.GET(url, ginHandlerFuncList...)
+}
+
+//添加POST处理函数
+func (g *GinDataHandler) POST(url string, handlerList ...HandleGinDataUrlFunc) {
 	groupGin := g.Group(g.prefix)
 	ginHandlerFuncList := g.convertHandler(handlerList)
 	groupGin.POST(url, ginHandlerFuncList...)
