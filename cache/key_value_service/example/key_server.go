@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/google/martian/log"
 	"github.com/pineal-niwan/sensor/cache/key_value_service/server"
-	"github.com/urfave/cli"
+	"gopkg.in/urfave/cli.v1"
 	"os"
 )
 

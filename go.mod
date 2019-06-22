@@ -11,8 +11,7 @@ require (
 	github.com/json-iterator/go v1.1.6
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.4.2
-	github.com/urfave/cli v1.20.0
 	github.com/xeipuuv/gojsonschema v1.1.0
 	google.golang.org/grpc v1.21.1
-	gopkg.in/urfave/cli.v1 v1.20.0 // indirect
+	gopkg.in/urfave/cli.v1 v1.20.0
 )
