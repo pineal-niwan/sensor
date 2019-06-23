@@ -195,6 +195,58 @@ func (c *LruInt64AsKeyHash) SetWithTimeout(key int64, value interface{}, timeout
 	c.setWithTimestamp(key, value, timestamp)
 }
 
+//公共函数-设置 If key not exist
+func (c *LruInt64AsKeyHash) SetIfKeyNotExist(key int64, value interface{}) (oldValue interface{}, exist bool) {
+	c.Lock()
+	defer c.Unlock()
+	oldValue, exist = c.get(key)
+	if !exist {
+		c.set(key, value)
+	}
+	return
+}
+
+//公共函数-设置 If key not exist -带超时 -- timeout以ms计
+func (c *LruInt64AsKeyHash) SetWithTimeoutIfKeyNotExist(key int64, value interface{}, timeout int64) (
+	oldValue interface{}, exist bool) {
+
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+	timestamp += timeout
+	c.Lock()
+	defer c.Unlock()
+	oldValue, exist = c.get(key)
+	if !exist {
+		c.setWithTimestamp(key, value, timestamp)
+	}
+	return
+}
+
+//公共函数-设置 If key exist
+func (c *LruInt64AsKeyHash) SetIfKeyExist(key int64, value interface{}) (oldValue interface{}, exist bool) {
+	c.Lock()
+	defer c.Unlock()
+	oldValue, exist = c.get(key)
+	if exist {
+		c.set(key, value)
+	}
+	return
+}
+
+//公共函数-设置 If key exist -带超时 -- timeout以ms计
+func (c *LruInt64AsKeyHash) SetWithTimeoutIfKeyExist(key int64, value interface{}, timeout int64) (
+	oldValue interface{}, exist bool) {
+
+	timestamp := time.Now().UnixNano() / int64(time.Millisecond)
+	timestamp += timeout
+	c.Lock()
+	defer c.Unlock()
+	oldValue, exist = c.get(key)
+	if exist {
+		c.setWithTimestamp(key, value, timestamp)
+	}
+	return
+}
+
 //公共函数-删除
 func (c *LruInt64AsKeyHash) Remove(key int64) (value interface{}, ok bool) {
 	c.Lock()

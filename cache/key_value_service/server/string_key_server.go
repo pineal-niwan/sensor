@@ -55,6 +55,36 @@ func (k *StringKeyValueService) setupMsgValue(val interface{}, ok bool) *pb.MsgV
 	}
 }
 
+// 设置缓存 -- if not exit
+func (k *StringKeyValueService) SetIfKeyNotExist(ctx context.Context, msg *pb.MsgStringKeyValue) (*pb.MsgValue, error) {
+
+	val, ok := k.kvHash.SetIfKeyNotExist(msg.Key, msg.Value)
+	return k.setupMsgValue(val, ok), nil
+}
+
+// 设置缓存-带超时 -- if not exist
+func (k *StringKeyValueService) SetWithTimeoutIfKeyNotExist(ctx context.Context, msg *pb.MsgStringKeyValueTimeout) (
+	*pb.MsgValue, error) {
+
+	val, ok := k.kvHash.SetWithTimeoutIfKeyNotExist(msg.Key, msg.Value, msg.Timeout)
+	return k.setupMsgValue(val, ok), nil
+}
+
+// 设置缓存 -- if exit
+func (k *StringKeyValueService) SetIfKeyExist(ctx context.Context, msg *pb.MsgStringKeyValue) (*pb.MsgValue, error) {
+
+	val, ok := k.kvHash.SetIfKeyExist(msg.Key, msg.Value)
+	return k.setupMsgValue(val, ok), nil
+}
+
+// 设置缓存-带超时 -- if exist
+func (k *StringKeyValueService) SetWithTimeoutIfKeyExist(ctx context.Context, msg *pb.MsgStringKeyValueTimeout) (
+	*pb.MsgValue, error) {
+
+	val, ok := k.kvHash.SetWithTimeoutIfKeyExist(msg.Key, msg.Value, msg.Timeout)
+	return k.setupMsgValue(val, ok), nil
+}
+
 // 获取缓存
 func (k *StringKeyValueService) Get(ctx context.Context, in *pb.MsgStringKey) (*pb.MsgValue, error) {
 	val, ok := k.kvHash.Get(in.Key)

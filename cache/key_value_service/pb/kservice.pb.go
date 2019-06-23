@@ -519,35 +519,40 @@ func init() {
 func init() { proto.RegisterFile("kservice.proto", fileDescriptor_4ee8e12a3d2812f4) }
 
 var fileDescriptor_4ee8e12a3d2812f4 = []byte{
-	// 444 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x52, 0x4d, 0x8b, 0xd3, 0x50,
-	0x14, 0xa5, 0x2f, 0xb4, 0x8e, 0xd7, 0x12, 0xeb, 0xb3, 0x33, 0x13, 0x32, 0x82, 0x25, 0x28, 0xcc,
-	0x42, 0x32, 0x32, 0x33, 0xcc, 0x80, 0xba, 0x50, 0xa4, 0x16, 0xb1, 0xd9, 0x24, 0x45, 0x17, 0xba,
-	0x69, 0xe4, 0x36, 0x09, 0x49, 0x93, 0x90, 0xf7, 0x5a, 0xe8, 0x2f, 0x75, 0xe3, 0x8f, 0x91, 0x97,
-	0x97, 0x40, 0x3e, 0x9a, 0x8a, 0xdd, 0xb8, 0x7b, 0xf7, 0xde, 0x73, 0xce, 0x3d, 0x39, 0xb9, 0xa0,
-	0x86, 0x0c, 0xb3, 0x6d, 0xf0, 0x13, 0xcd, 0x34, 0x4b, 0x78, 0x42, 0x49, 0xea, 0xea, 0x17, 0x5e,
-	0x92, 0x78, 0x11, 0x5e, 0xe5, 0x1d, 0x77, 0xb3, 0xba, 0xc2, 0x75, 0xca, 0x77, 0x12, 0x60, 0x4c,
-	0x60, 0x68, 0x31, 0xcf, 0xe1, 0x59, 0x10, 0x7b, 0x5f, 0x70, 0x47, 0x47, 0xa0, 0x84, 0xb8, 0xd3,
-	0x7a, 0x93, 0xde, 0xe5, 0x43, 0x5b, 0x3c, 0x8d, 0xe7, 0xf0, 0xc8, 0x62, 0xde, 0xe7, 0x98, 0xdf,
-	0xdd, 0x36, 0x00, 0x8a, 0x04, 0xbc, 0x86, 0x13, 0x8b, 0x79, 0x5f, 0x97, 0xd1, 0x06, 0xa9, 0x0a,
-	0x24, 0x09, 0xf3, 0xe1, 0x89, 0x4d, 0x92, 0x90, 0x8e, 0xa1, 0xbf, 0x15, 0x03, 0x8d, 0x4c, 0x7a,
-	0x97, 0x43, 0x5b, 0x16, 0xc6, 0x5b, 0x78, 0x52, 0x5d, 0x2a, 0xa9, 0xad, 0xcd, 0x1d, 0xe4, 0x37,
-	0x30, 0xaa, 0xf8, 0x69, 0x71, 0x95, 0x43, 0xdc, 0x1f, 0xa0, 0xb5, 0x16, 0x2f, 0x82, 0x35, 0x26,
-	0x1b, 0x4e, 0x35, 0x78, 0xc0, 0xe5, 0xb3, 0xd0, 0x29, 0xcb, 0x52, 0x9d, 0xec, 0x71, 0xa6, 0x54,
-	0xd5, 0xbf, 0xc3, 0x79, 0xd3, 0xd9, 0x3f, 0x89, 0x2b, 0x87, 0xc4, 0x3f, 0xc0, 0xd3, 0xaa, 0xf5,
-	0x23, 0x5c, 0x1b, 0xef, 0x81, 0x56, 0xfc, 0x1d, 0x61, 0xcd, 0x78, 0x07, 0x03, 0x8b, 0x79, 0x73,
-	0x8c, 0x05, 0xcb, 0x5f, 0x32, 0x7f, 0x8e, 0x71, 0xce, 0xea, 0xdb, 0x65, 0x29, 0x26, 0x51, 0xc0,
-	0xb8, 0x98, 0x10, 0x39, 0x29, 0xca, 0xeb, 0xdf, 0x04, 0x4e, 0xeb, 0xd9, 0x3b, 0xf2, 0x58, 0xe9,
-	0x2d, 0x28, 0x0e, 0x72, 0x7a, 0x6a, 0xa6, 0xae, 0xd9, 0xfa, 0x41, 0xfa, 0x99, 0x29, 0x2f, 0xd8,
-	0x2c, 0x2f, 0xd8, 0x9c, 0x8a, 0x0b, 0xa6, 0x9f, 0x40, 0x75, 0x90, 0x7f, 0x0b, 0xb8, 0x5f, 0x7e,
-	0xcb, 0xb3, 0xbd, 0x02, 0xc5, 0xb4, 0x53, 0xe7, 0x25, 0x28, 0x33, 0xe4, 0x74, 0xd4, 0x24, 0xeb,
-	0xc3, 0xa2, 0x23, 0x8f, 0xec, 0x1e, 0xd4, 0x19, 0xf2, 0x85, 0x8f, 0xb1, 0x8d, 0xab, 0x0c, 0x99,
-	0x4f, 0xcf, 0x9b, 0x8c, 0x72, 0x53, 0x9d, 0xf8, 0x0a, 0x06, 0x33, 0x14, 0x09, 0xd0, 0x0e, 0x07,
-	0x3a, 0x14, 0x78, 0x81, 0xb9, 0x87, 0xfe, 0xc7, 0x08, 0x97, 0x59, 0x27, 0xb8, 0xa3, 0x7f, 0xfd,
-	0x8b, 0xc0, 0xb8, 0x76, 0x7c, 0x65, 0xba, 0x37, 0x32, 0xdd, 0x71, 0xb1, 0xa4, 0x86, 0xe9, 0x0c,
-	0x65, 0xda, 0x0a, 0xf7, 0x62, 0x1f, 0xff, 0x6f, 0xd9, 0xbe, 0x90, 0xd9, 0x3e, 0x6e, 0x70, 0x1b,
-	0x09, 0xdd, 0xb5, 0xa2, 0x3d, 0x6b, 0x10, 0xfe, 0x67, 0xb2, 0xee, 0x20, 0xaf, 0x6f, 0xfe, 0x04,
-	0x00, 0x00, 0xff, 0xff, 0x38, 0x5f, 0x2f, 0xd7, 0x5e, 0x05, 0x00, 0x00,
+	// 514 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x93, 0x4f, 0x8f, 0xd2, 0x40,
+	0x18, 0xc6, 0x43, 0xbb, 0xe0, 0xfa, 0x8a, 0x88, 0x23, 0xbb, 0xdb, 0x80, 0x89, 0xa4, 0xd1, 0x64,
+	0x0f, 0xa6, 0x6b, 0x16, 0x02, 0x89, 0x7a, 0xd0, 0x18, 0x16, 0xc9, 0x2e, 0x1e, 0xda, 0x8d, 0x1e,
+	0xf4, 0x02, 0xe6, 0xa5, 0x6d, 0x60, 0x5b, 0xd2, 0x19, 0x36, 0xf2, 0x41, 0xbd, 0xfa, 0x59, 0xcc,
+	0x30, 0x6d, 0xd2, 0x99, 0xfe, 0x51, 0xf6, 0xb2, 0xb7, 0xce, 0xbc, 0xcf, 0xf3, 0xbc, 0x0f, 0xed,
+	0x0f, 0x68, 0x2c, 0x29, 0x46, 0xb7, 0xfe, 0x4f, 0xb4, 0xd6, 0x51, 0xc8, 0x42, 0xa2, 0xad, 0xe7,
+	0xed, 0x8e, 0x1b, 0x86, 0xee, 0x0a, 0xcf, 0x76, 0x37, 0xf3, 0xcd, 0xe2, 0x0c, 0x6f, 0xd6, 0x6c,
+	0x2b, 0x04, 0x66, 0x17, 0xea, 0x53, 0xea, 0x3a, 0x2c, 0xf2, 0x03, 0xf7, 0x12, 0xb7, 0xa4, 0x09,
+	0xfa, 0x12, 0xb7, 0x46, 0xa5, 0x5b, 0x39, 0x7d, 0x68, 0xf3, 0x47, 0xf3, 0x05, 0x3c, 0x9a, 0x52,
+	0x77, 0x12, 0xb0, 0x41, 0x5f, 0x11, 0xe8, 0x42, 0xf0, 0x06, 0x0e, 0xa7, 0xd4, 0xfd, 0x3a, 0x5b,
+	0x6d, 0x90, 0x34, 0x40, 0x0b, 0x97, 0xbb, 0xe1, 0xa1, 0xad, 0x85, 0x4b, 0xd2, 0x82, 0xea, 0x2d,
+	0x1f, 0x18, 0x5a, 0xb7, 0x72, 0x5a, 0xb7, 0xc5, 0xc1, 0x7c, 0x07, 0x4f, 0xd3, 0x4b, 0x85, 0x35,
+	0xb3, 0xb9, 0xc0, 0xfc, 0x16, 0x9a, 0xa9, 0x3e, 0x19, 0xaf, 0x5e, 0xe6, 0xfd, 0x01, 0x46, 0x66,
+	0xf1, 0xb5, 0x7f, 0x83, 0xe1, 0x86, 0x11, 0x03, 0x1e, 0x30, 0xf1, 0x18, 0xe7, 0x24, 0xc7, 0x24,
+	0x5d, 0xcb, 0x69, 0xa6, 0xa7, 0xd3, 0xbf, 0xc3, 0x89, 0xda, 0x6c, 0xaf, 0x70, 0xbd, 0x2c, 0xfc,
+	0x23, 0x3c, 0x4b, 0x57, 0xbf, 0x43, 0x6b, 0xf3, 0x03, 0x90, 0x54, 0xbf, 0x3b, 0x54, 0x33, 0xdf,
+	0x43, 0x6d, 0x4a, 0xdd, 0x2b, 0x0c, 0xb8, 0xcb, 0x9b, 0x51, 0xef, 0x0a, 0x83, 0x9d, 0xab, 0x6a,
+	0x27, 0x47, 0x3e, 0x59, 0xf9, 0x94, 0xf1, 0x89, 0x26, 0x26, 0xf1, 0xf1, 0xfc, 0xcf, 0x01, 0x1c,
+	0xc9, 0xef, 0xde, 0x11, 0xb0, 0x92, 0x3e, 0xe8, 0x0e, 0x32, 0x72, 0x64, 0xad, 0xe7, 0x56, 0xe6,
+	0x03, 0xb5, 0x8f, 0x2d, 0x41, 0xb0, 0x95, 0x10, 0x6c, 0x8d, 0x38, 0xc1, 0xe4, 0x02, 0x1a, 0x0e,
+	0xb2, 0x6f, 0x3e, 0xf3, 0x92, 0xdf, 0xf2, 0x3c, 0x37, 0x20, 0x9e, 0x16, 0xe6, 0x0c, 0xa1, 0xe9,
+	0x20, 0x9b, 0x2c, 0x2e, 0x71, 0xfb, 0x25, 0x64, 0xa3, 0x5f, 0x3e, 0x2d, 0xac, 0x52, 0x8f, 0xaf,
+	0x05, 0x76, 0x13, 0xe8, 0xc8, 0x05, 0xe4, 0x8c, 0xf2, 0x36, 0x72, 0x54, 0x1f, 0x1e, 0x27, 0x1d,
+	0xf6, 0x28, 0x70, 0x01, 0x46, 0x4e, 0x81, 0xfd, 0xb7, 0xbf, 0x02, 0x7d, 0x8c, 0x8c, 0x34, 0x55,
+	0x8b, 0x22, 0x1b, 0x42, 0x63, 0x8c, 0xec, 0xda, 0xc3, 0xc0, 0xc6, 0x45, 0x84, 0xd4, 0x23, 0x27,
+	0xaa, 0x23, 0x3f, 0xff, 0x35, 0xd4, 0xc6, 0xc8, 0x19, 0x20, 0x05, 0xdf, 0xa0, 0x0d, 0xb1, 0x9e,
+	0x6b, 0x86, 0x50, 0xfd, 0xb4, 0xc2, 0x59, 0x54, 0x28, 0x2e, 0xb8, 0x3f, 0xff, 0x7d, 0x00, 0x2d,
+	0xe9, 0xef, 0x97, 0xf0, 0xd5, 0x13, 0x7c, 0xb5, 0xe2, 0x25, 0x92, 0xa6, 0x10, 0x8b, 0x51, 0x06,
+	0xaf, 0x4e, 0x9e, 0xff, 0x5f, 0x74, 0x0d, 0x72, 0xe8, 0xca, 0x2f, 0x22, 0xbf, 0xb3, 0xcf, 0xe5,
+	0x70, 0x95, 0x76, 0x91, 0x93, 0x7a, 0x2a, 0x5b, 0xff, 0xb3, 0x7e, 0x54, 0x82, 0xd6, 0x1e, 0xbb,
+	0x5f, 0x0a, 0xb2, 0x9e, 0x28, 0x0e, 0x45, 0x35, 0xc8, 0x80, 0x75, 0xac, 0x18, 0xee, 0x93, 0xab,
+	0x79, 0x6d, 0x77, 0xee, 0xfd, 0x0d, 0x00, 0x00, 0xff, 0xff, 0xf9, 0x01, 0x7e, 0x7d, 0x5e, 0x07,
+	0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -566,6 +571,14 @@ type StringKeyValueServiceClient interface {
 	Set(ctx context.Context, in *MsgStringKeyValue, opts ...grpc.CallOption) (*empty.Empty, error)
 	//设置缓存-带超时
 	SetWithTimeout(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*empty.Empty, error)
+	//设置缓存 -- if not exist
+	SetIfKeyNotExist(ctx context.Context, in *MsgStringKeyValue, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存-带超时 -- if not exist
+	SetWithTimeoutIfKeyNotExist(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存 -- if exist
+	SetIfKeyExist(ctx context.Context, in *MsgStringKeyValue, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存-带超时 -- if exist
+	SetWithTimeoutIfKeyExist(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error)
 	//获取缓存
 	Get(ctx context.Context, in *MsgStringKey, opts ...grpc.CallOption) (*MsgValue, error)
 	//获取缓存后刷新
@@ -596,6 +609,42 @@ func (c *stringKeyValueServiceClient) Set(ctx context.Context, in *MsgStringKeyV
 func (c *stringKeyValueServiceClient) SetWithTimeout(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/pb.StringKeyValueService/SetWithTimeout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stringKeyValueServiceClient) SetIfKeyNotExist(ctx context.Context, in *MsgStringKeyValue, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.StringKeyValueService/SetIfKeyNotExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stringKeyValueServiceClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.StringKeyValueService/SetWithTimeoutIfKeyNotExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stringKeyValueServiceClient) SetIfKeyExist(ctx context.Context, in *MsgStringKeyValue, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.StringKeyValueService/SetIfKeyExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *stringKeyValueServiceClient) SetWithTimeoutIfKeyExist(ctx context.Context, in *MsgStringKeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.StringKeyValueService/SetWithTimeoutIfKeyExist", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -644,6 +693,14 @@ type StringKeyValueServiceServer interface {
 	Set(context.Context, *MsgStringKeyValue) (*empty.Empty, error)
 	//设置缓存-带超时
 	SetWithTimeout(context.Context, *MsgStringKeyValueTimeout) (*empty.Empty, error)
+	//设置缓存 -- if not exist
+	SetIfKeyNotExist(context.Context, *MsgStringKeyValue) (*MsgValue, error)
+	//设置缓存-带超时 -- if not exist
+	SetWithTimeoutIfKeyNotExist(context.Context, *MsgStringKeyValueTimeout) (*MsgValue, error)
+	//设置缓存 -- if exist
+	SetIfKeyExist(context.Context, *MsgStringKeyValue) (*MsgValue, error)
+	//设置缓存-带超时 -- if exist
+	SetWithTimeoutIfKeyExist(context.Context, *MsgStringKeyValueTimeout) (*MsgValue, error)
 	//获取缓存
 	Get(context.Context, *MsgStringKey) (*MsgValue, error)
 	//获取缓存后刷新
@@ -690,6 +747,78 @@ func _StringKeyValueService_SetWithTimeout_Handler(srv interface{}, ctx context.
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StringKeyValueServiceServer).SetWithTimeout(ctx, req.(*MsgStringKeyValueTimeout))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StringKeyValueService_SetIfKeyNotExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgStringKeyValue)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StringKeyValueServiceServer).SetIfKeyNotExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.StringKeyValueService/SetIfKeyNotExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StringKeyValueServiceServer).SetIfKeyNotExist(ctx, req.(*MsgStringKeyValue))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StringKeyValueService_SetWithTimeoutIfKeyNotExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgStringKeyValueTimeout)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StringKeyValueServiceServer).SetWithTimeoutIfKeyNotExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.StringKeyValueService/SetWithTimeoutIfKeyNotExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StringKeyValueServiceServer).SetWithTimeoutIfKeyNotExist(ctx, req.(*MsgStringKeyValueTimeout))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StringKeyValueService_SetIfKeyExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgStringKeyValue)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StringKeyValueServiceServer).SetIfKeyExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.StringKeyValueService/SetIfKeyExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StringKeyValueServiceServer).SetIfKeyExist(ctx, req.(*MsgStringKeyValue))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StringKeyValueService_SetWithTimeoutIfKeyExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgStringKeyValueTimeout)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StringKeyValueServiceServer).SetWithTimeoutIfKeyExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.StringKeyValueService/SetWithTimeoutIfKeyExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StringKeyValueServiceServer).SetWithTimeoutIfKeyExist(ctx, req.(*MsgStringKeyValueTimeout))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -779,6 +908,22 @@ var _StringKeyValueService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _StringKeyValueService_SetWithTimeout_Handler,
 		},
 		{
+			MethodName: "SetIfKeyNotExist",
+			Handler:    _StringKeyValueService_SetIfKeyNotExist_Handler,
+		},
+		{
+			MethodName: "SetWithTimeoutIfKeyNotExist",
+			Handler:    _StringKeyValueService_SetWithTimeoutIfKeyNotExist_Handler,
+		},
+		{
+			MethodName: "SetIfKeyExist",
+			Handler:    _StringKeyValueService_SetIfKeyExist_Handler,
+		},
+		{
+			MethodName: "SetWithTimeoutIfKeyExist",
+			Handler:    _StringKeyValueService_SetWithTimeoutIfKeyExist_Handler,
+		},
+		{
 			MethodName: "Get",
 			Handler:    _StringKeyValueService_Get_Handler,
 		},
@@ -807,6 +952,14 @@ type Int64KeyValueServiceClient interface {
 	Set(ctx context.Context, in *MsgInt64KeyValue, opts ...grpc.CallOption) (*empty.Empty, error)
 	//设置缓存-带超时
 	SetWithTimeout(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*empty.Empty, error)
+	//设置缓存 -- if not exist
+	SetIfKeyNotExist(ctx context.Context, in *MsgInt64KeyValue, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存-带超时 -- if not exist
+	SetWithTimeoutIfKeyNotExist(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存 -- if exist
+	SetIfKeyExist(ctx context.Context, in *MsgInt64KeyValue, opts ...grpc.CallOption) (*MsgValue, error)
+	//设置缓存-带超时 -- if exist
+	SetWithTimeoutIfKeyExist(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error)
 	//获取缓存
 	Get(ctx context.Context, in *MsgInt64Key, opts ...grpc.CallOption) (*MsgValue, error)
 	//获取缓存后刷新
@@ -837,6 +990,42 @@ func (c *int64KeyValueServiceClient) Set(ctx context.Context, in *MsgInt64KeyVal
 func (c *int64KeyValueServiceClient) SetWithTimeout(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/pb.Int64KeyValueService/SetWithTimeout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *int64KeyValueServiceClient) SetIfKeyNotExist(ctx context.Context, in *MsgInt64KeyValue, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.Int64KeyValueService/SetIfKeyNotExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *int64KeyValueServiceClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.Int64KeyValueService/SetWithTimeoutIfKeyNotExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *int64KeyValueServiceClient) SetIfKeyExist(ctx context.Context, in *MsgInt64KeyValue, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.Int64KeyValueService/SetIfKeyExist", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *int64KeyValueServiceClient) SetWithTimeoutIfKeyExist(ctx context.Context, in *MsgInt64KeyValueTimeout, opts ...grpc.CallOption) (*MsgValue, error) {
+	out := new(MsgValue)
+	err := c.cc.Invoke(ctx, "/pb.Int64KeyValueService/SetWithTimeoutIfKeyExist", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -885,6 +1074,14 @@ type Int64KeyValueServiceServer interface {
 	Set(context.Context, *MsgInt64KeyValue) (*empty.Empty, error)
 	//设置缓存-带超时
 	SetWithTimeout(context.Context, *MsgInt64KeyValueTimeout) (*empty.Empty, error)
+	//设置缓存 -- if not exist
+	SetIfKeyNotExist(context.Context, *MsgInt64KeyValue) (*MsgValue, error)
+	//设置缓存-带超时 -- if not exist
+	SetWithTimeoutIfKeyNotExist(context.Context, *MsgInt64KeyValueTimeout) (*MsgValue, error)
+	//设置缓存 -- if exist
+	SetIfKeyExist(context.Context, *MsgInt64KeyValue) (*MsgValue, error)
+	//设置缓存-带超时 -- if exist
+	SetWithTimeoutIfKeyExist(context.Context, *MsgInt64KeyValueTimeout) (*MsgValue, error)
 	//获取缓存
 	Get(context.Context, *MsgInt64Key) (*MsgValue, error)
 	//获取缓存后刷新
@@ -931,6 +1128,78 @@ func _Int64KeyValueService_SetWithTimeout_Handler(srv interface{}, ctx context.C
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(Int64KeyValueServiceServer).SetWithTimeout(ctx, req.(*MsgInt64KeyValueTimeout))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Int64KeyValueService_SetIfKeyNotExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgInt64KeyValue)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(Int64KeyValueServiceServer).SetIfKeyNotExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Int64KeyValueService/SetIfKeyNotExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(Int64KeyValueServiceServer).SetIfKeyNotExist(ctx, req.(*MsgInt64KeyValue))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Int64KeyValueService_SetWithTimeoutIfKeyNotExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgInt64KeyValueTimeout)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(Int64KeyValueServiceServer).SetWithTimeoutIfKeyNotExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Int64KeyValueService/SetWithTimeoutIfKeyNotExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(Int64KeyValueServiceServer).SetWithTimeoutIfKeyNotExist(ctx, req.(*MsgInt64KeyValueTimeout))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Int64KeyValueService_SetIfKeyExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgInt64KeyValue)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(Int64KeyValueServiceServer).SetIfKeyExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Int64KeyValueService/SetIfKeyExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(Int64KeyValueServiceServer).SetIfKeyExist(ctx, req.(*MsgInt64KeyValue))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Int64KeyValueService_SetWithTimeoutIfKeyExist_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgInt64KeyValueTimeout)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(Int64KeyValueServiceServer).SetWithTimeoutIfKeyExist(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Int64KeyValueService/SetWithTimeoutIfKeyExist",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(Int64KeyValueServiceServer).SetWithTimeoutIfKeyExist(ctx, req.(*MsgInt64KeyValueTimeout))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1018,6 +1287,22 @@ var _Int64KeyValueService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetWithTimeout",
 			Handler:    _Int64KeyValueService_SetWithTimeout_Handler,
+		},
+		{
+			MethodName: "SetIfKeyNotExist",
+			Handler:    _Int64KeyValueService_SetIfKeyNotExist_Handler,
+		},
+		{
+			MethodName: "SetWithTimeoutIfKeyNotExist",
+			Handler:    _Int64KeyValueService_SetWithTimeoutIfKeyNotExist_Handler,
+		},
+		{
+			MethodName: "SetIfKeyExist",
+			Handler:    _Int64KeyValueService_SetIfKeyExist_Handler,
+		},
+		{
+			MethodName: "SetWithTimeoutIfKeyExist",
+			Handler:    _Int64KeyValueService_SetWithTimeoutIfKeyExist_Handler,
 		},
 		{
 			MethodName: "Get",

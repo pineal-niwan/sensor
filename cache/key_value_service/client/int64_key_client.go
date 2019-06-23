@@ -97,6 +97,68 @@ func (c *Int64KeyClient) SetWithTimeout(ctx context.Context, key int64, value []
 	return err
 }
 
+// 设置缓存
+func (c *Int64KeyClient) SetIfKeyNotExist(ctx context.Context, key int64, value []byte) error {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return ErrClientNotReady
+	}
+	_, err := c.client.SetIfKeyNotExist(ctx, &pb.MsgInt64KeyValue{
+		Key:   key,
+		Value: value,
+	})
+	return err
+}
+
+// 设置缓存-带超时
+func (c *Int64KeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key int64, value []byte, timeout int64) error {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return ErrClientNotReady
+	}
+	_, err := c.client.SetWithTimeoutIfKeyNotExist(ctx, &pb.MsgInt64KeyValueTimeout{
+		Timeout: timeout,
+		Key:     key,
+		Value:   value,
+	})
+	return err
+}
+
+// 设置缓存
+func (c *Int64KeyClient) SetIfKeyExist(ctx context.Context, key int64, value []byte) error {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return ErrClientNotReady
+	}
+	_, err := c.client.SetIfKeyExist(ctx, &pb.MsgInt64KeyValue{
+		Key:   key,
+		Value: value,
+	})
+	return err
+}
+
+// 设置缓存-带超时
+func (c *Int64KeyClient) SetWithTimeoutIfKeyExist(ctx context.Context, key int64, value []byte, timeout int64) error {
+	c.RLock()
+	defer c.RUnlock()
+
+	if c.client == nil {
+		return ErrClientNotReady
+	}
+	_, err := c.client.SetWithTimeoutIfKeyExist(ctx, &pb.MsgInt64KeyValueTimeout{
+		Timeout: timeout,
+		Key:     key,
+		Value:   value,
+	})
+	return err
+}
+
 // 获取缓存
 func (c *Int64KeyClient) Get(ctx context.Context, key int64) ([]byte, error) {
 	c.RLock()

@@ -70,6 +70,14 @@ service StringKeyValueService {
     rpc Set (MsgStringKeyValue) returns (google.protobuf.Empty);
     //设置缓存-带超时
     rpc SetWithTimeout (MsgStringKeyValueTimeout) returns (google.protobuf.Empty);
+    //设置缓存 -- if not exist
+    rpc SetIfKeyNotExist (MsgStringKeyValue) returns (MsgValue);
+    //设置缓存-带超时 -- if not exist
+    rpc SetWithTimeoutIfKeyNotExist  (MsgStringKeyValueTimeout) returns (MsgValue);
+    //设置缓存 -- if exist
+    rpc SetIfKeyExist (MsgStringKeyValue) returns (MsgValue);
+    //设置缓存-带超时 -- if exist
+    rpc SetWithTimeoutIfKeyExist  (MsgStringKeyValueTimeout) returns (MsgValue);
     //获取缓存
     rpc Get (MsgStringKey) returns (MsgValue);
     //获取缓存后刷新
@@ -86,6 +94,14 @@ service Int64KeyValueService {
     rpc Set (MsgInt64KeyValue) returns (google.protobuf.Empty);
     //设置缓存-带超时
     rpc SetWithTimeout (MsgInt64KeyValueTimeout) returns (google.protobuf.Empty);
+    //设置缓存 -- if not exist
+    rpc SetIfKeyNotExist (MsgInt64KeyValue) returns (MsgValue);
+    //设置缓存-带超时 -- if not exist
+    rpc SetWithTimeoutIfKeyNotExist  (MsgInt64KeyValueTimeout) returns (MsgValue);
+    //设置缓存 -- if exist
+    rpc SetIfKeyExist (MsgInt64KeyValue) returns (MsgValue);
+    //设置缓存-带超时 -- if exist
+    rpc SetWithTimeoutIfKeyExist  (MsgInt64KeyValueTimeout) returns (MsgValue);
     //获取缓存
     rpc Get (MsgInt64Key) returns (MsgValue);
     //获取缓存后刷新
