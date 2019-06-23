@@ -92,6 +92,18 @@ func (g *GinHandler) SetPrefix(prefix string) {
 	g.prefix = prefix
 }
 
+//添加GET处理函数
+func (g *GinHandler) GET(url string, handlers ...gin.HandlerFunc) {
+	groupGin := g.Group(g.prefix)
+	groupGin.GET(url, handlers...)
+}
+
+//添加POST处理函数
+func (g *GinHandler) POST(url string, handlers ...gin.HandlerFunc) {
+	groupGin := g.Group(g.prefix)
+	groupGin.POST(url, handlers...)
+}
+
 //带logger的http处理函数
 type HandleGinUrlFunc func(c *gin.Context, iLogger logger.ILogger)
 
@@ -108,14 +120,14 @@ func (g *GinHandler) convertHandler(handlerList []HandleGinUrlFunc) []gin.Handle
 }
 
 //添加GET处理函数
-func (g *GinHandler) GET(url string, handlerList ...HandleGinUrlFunc) {
+func (g *GinHandler) GETx(url string, handlerList ...HandleGinUrlFunc) {
 	groupGin := g.Group(g.prefix)
 	ginHandlerFuncList := g.convertHandler(handlerList)
 	groupGin.GET(url, ginHandlerFuncList...)
 }
 
 //添加POST处理函数
-func (g *GinHandler) POST(url string, handlerList ...HandleGinUrlFunc) {
+func (g *GinHandler) POSTx(url string, handlerList ...HandleGinUrlFunc) {
 	groupGin := g.Group(g.prefix)
 	ginHandlerFuncList := g.convertHandler(handlerList)
 	groupGin.POST(url, ginHandlerFuncList...)
@@ -153,14 +165,14 @@ func (g *GinDataHandler) convertHandler(handlerList []HandleGinDataUrlFunc) []gi
 }
 
 //添加GET处理函数
-func (g *GinDataHandler) GET(url string, handlerList ...HandleGinDataUrlFunc) {
+func (g *GinDataHandler) GETx(url string, handlerList ...HandleGinDataUrlFunc) {
 	groupGin := g.Group(g.prefix)
 	ginHandlerFuncList := g.convertHandler(handlerList)
 	groupGin.GET(url, ginHandlerFuncList...)
 }
 
 //添加POST处理函数
-func (g *GinDataHandler) POST(url string, handlerList ...HandleGinDataUrlFunc) {
+func (g *GinDataHandler) POSTx(url string, handlerList ...HandleGinDataUrlFunc) {
 	groupGin := g.Group(g.prefix)
 	ginHandlerFuncList := g.convertHandler(handlerList)
 	groupGin.POST(url, ginHandlerFuncList...)
