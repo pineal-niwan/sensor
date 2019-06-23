@@ -1,12 +1,15 @@
 package httpx
 
 import (
+	"crypto/aes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-errors/errors"
+	"github.com/gorilla/securecookie"
 	"github.com/jinzhu/gorm"
 	"github.com/pineal-niwan/sensor/cache"
 	"github.com/pineal-niwan/sensor/logger"
+	"github.com/xeipuuv/gojsonschema"
 	"net/http"
 	"net/http/httputil"
 	"time"
@@ -16,11 +19,26 @@ func init() {
 	gin.SetMode(gin.ReleaseMode)
 }
 
+//Hash Key
+type HashKeyWithTime struct {
+	HashKey string
+	TimeTTL time.Time
+}
+
+var (
+	defaultCookieCodec = securecookie.New([]byte(`zACJq*(lFao11n&@lt)#$qoGNHu3zjo6!`),
+		[]byte(`6!q*(lWQ1T8P$q1zj1ao7n3RS&@lt9)#`))
+)
+
 // gin handler结构体
 type GinHandler struct {
 	*gin.Engine
 	logger.ILogger
-	prefix string
+	prefix         string
+	dataKey        string
+	sessionKey     string
+	cookieCodec    *securecookie.SecureCookie
+	jsonSchemaHash map[string]*gojsonschema.Schema
 }
 
 //记录日志
@@ -69,7 +87,7 @@ func (g *GinHandler) Recovery(c *gin.Context) {
 }
 
 //新建gin handler
-func NewGinHandler(iLogger logger.ILogger) *GinHandler {
+func NewGinHandler(iLogger logger.ILogger, jsonSchemaHash map[string]*gojsonschema.Schema) *GinHandler {
 	var ginLogger logger.ILogger
 
 	if iLogger == nil {
@@ -78,9 +96,16 @@ func NewGinHandler(iLogger logger.ILogger) *GinHandler {
 		ginLogger = iLogger
 	}
 
+	newJsonSchemaHash := jsonSchemaHash
+	if newJsonSchemaHash == nil {
+		newJsonSchemaHash = make(map[string]*gojsonschema.Schema)
+	}
+
 	ginHandler := &GinHandler{
-		Engine:  gin.New(),
-		ILogger: ginLogger,
+		Engine:         gin.New(),
+		ILogger:        ginLogger,
+		dataKey:        `data`,
+		jsonSchemaHash: newJsonSchemaHash,
 	}
 	ginHandler.Use(ginHandler.Logger)
 	ginHandler.Use(ginHandler.Recovery)
@@ -90,6 +115,180 @@ func NewGinHandler(iLogger logger.ILogger) *GinHandler {
 //添加前缀
 func (g *GinHandler) SetPrefix(prefix string) {
 	g.prefix = prefix
+}
+
+//设置session key
+func (g *GinHandler) SetSessionKey(sessionKey string) {
+	g.sessionKey = sessionKey
+}
+
+//回应错误的参数请求
+func (g *GinHandler) ResponseBadRequest(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": BadRequestCode,
+		"errMsg": BadRequestMsg,
+	})
+}
+
+//回应没有登录的请求
+func (g *GinHandler) ResponseNeedLogin(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": SessionFailCode,
+		"errMsg": SessionFailMsg,
+	})
+}
+
+//回应权限不足
+func (g *GinHandler) ResponsePermissionDeny(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": PermissionDenyCode,
+		"errMsg": PermissionDenyMsg,
+	})
+}
+
+//回应not found
+func (g *GinHandler) ResponseNotFound(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": NotFoundCode,
+		"errMsg": NotFoundMsg,
+	})
+}
+
+//回应服务器内部错
+func (g *GinHandler) ResponseInternalError(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": ServerFailCode,
+		"errMsg": ServerFailMsg,
+	})
+}
+
+//回应正确的响应
+func (g *GinHandler) ResponseOK(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": http.StatusOK,
+		"errMsg": "",
+	})
+}
+
+//回应正确的数据
+func (g *GinHandler) ResponseData(c *gin.Context, data interface{}) {
+	c.JSON(http.StatusOK, gin.H{
+		"result": http.StatusOK,
+		"errMsg": "",
+		"data":   data,
+	})
+}
+
+//使用json schema解析数据
+func (g *GinHandler) ParseJson(c *gin.Context, schemaKey string) {
+	var data map[string]interface{}
+	err := c.BindJSON(&data)
+	if err != nil {
+		g.ResponseBadRequest(c)
+		c.Abort()
+		g.ILogger.Errorf("错误的json请求:%+v 错误信息:%+v", c.Request, err)
+		return
+	} else {
+		if schemaKey != "" {
+			schema := g.jsonSchemaHash[schemaKey]
+			if schema != nil {
+				loader := gojsonschema.NewGoLoader(data)
+				ret, err := schema.Validate(loader)
+				if err != nil {
+					g.ResponseBadRequest(c)
+					c.Abort()
+					g.ILogger.Errorf("错误的json请求:%+v 错误信息:%+v", c.Request, err)
+					g.ILogger.Errorf(`验证json schema出错:%+v`, err)
+					return
+				} else {
+					if !ret.Valid() {
+						g.ResponseBadRequest(c)
+						c.Abort()
+						g.ILogger.Errorf("错误的json请求:%+v 错误信息:%+v", c.Request, err)
+						g.ILogger.Errorf(`验证json schema出错内容:%+v`, ret.Errors())
+						return
+					}
+				}
+			}
+		}
+		c.Set(g.dataKey, data)
+	}
+}
+
+//获取解析的json data
+func (g *GinHandler) GetData(c *gin.Context) (map[string]interface{}, bool) {
+	iData, ok := c.Get(g.dataKey)
+	if !ok {
+		return __emptyHash, false
+	} else {
+		data, ok := iData.(map[string]interface{})
+		return data, ok
+	}
+}
+
+//编码session
+func (g *GinHandler) encodeSession(key string, hashKeyWithTime HashKeyWithTime) (hashKey string, err error) {
+	cookieCodec := defaultCookieCodec
+	if g.cookieCodec != nil {
+		cookieCodec = g.cookieCodec
+	}
+	return cookieCodec.Encode(key, hashKeyWithTime)
+}
+
+//解码session
+func (g *GinHandler) decodeSession(key string, hashKey string) (hashKeyWithTime HashKeyWithTime, err error) {
+	cookieCodec := defaultCookieCodec
+	if g.cookieCodec != nil {
+		cookieCodec = g.cookieCodec
+	}
+	err = cookieCodec.Decode(key, hashKey, &hashKeyWithTime)
+	return
+}
+
+//设置codec
+//其中blockKey长度需要为16/24/32
+func (g *GinHandler) SetCookieCodec(hashKey string, blockKey string) error {
+	l := len(blockKey)
+	switch l {
+	default:
+		return aes.KeySizeError(l)
+	case 16, 24, 32:
+		g.cookieCodec = securecookie.New([]byte(hashKey), []byte(blockKey))
+	}
+	return nil
+}
+
+//获取session
+func (g *GinHandler) GetSessionFromKey(c *gin.Context) (HashKeyWithTime, error) {
+	var sessionValue HashKeyWithTime
+	cookies, err := c.Request.Cookie(g.sessionKey)
+	if err != nil {
+		g.ILogger.Errorf("获取session key失败:%+v", err)
+		return sessionValue, err
+	}
+
+	sessionValue, err = g.decodeSession(g.sessionKey, cookies.Value)
+	if err != nil {
+		g.ILogger.Errorf("解码session key失败:%+v", err)
+		return sessionValue, err
+	}
+	return sessionValue, err
+}
+
+//设置session
+func (g *GinHandler) SetSessionWithKey(c *gin.Context, hashKeyWithTime HashKeyWithTime) error {
+	encode, err := g.encodeSession(g.sessionKey, hashKeyWithTime)
+	if err != nil {
+		return err
+	}
+	cookie := &http.Cookie{
+		Name:     g.sessionKey,
+		Value:    encode,
+		Path:     "/",
+		HttpOnly: true,
+	}
+	http.SetCookie(c.Writer, cookie)
+	return nil
 }
 
 //添加GET处理函数

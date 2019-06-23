@@ -32,6 +32,7 @@ const (
 	NameJsonSchemaFile        = `jsonSchemaFile`
 	NameInternalHttpAddress   = `internalHttpAddress`
 	NameInternalHttpUrlPrefix = `internalHttpUrlPrefix`
+	NameSessionKey          = `sessionKey`
 
 	/*---- gRpc flag -----*/
 	NameGRpcMaxBackOff = `gRpcMaxBackOff`
@@ -141,6 +142,12 @@ var (
 	InternalHttpUrlPrefixFlag = altsrc.NewStringFlag(cli.StringFlag{
 		Name:  NameInternalHttpUrlPrefix,
 		Usage: `internal http url prefix`,
+	})
+
+	SessionKeyFlag = altsrc.NewStringFlag(cli.StringFlag{
+		Name:  NameSessionKey,
+		Usage: `session key`,
+		Value: `tqx-i1-pt-re`,
 	})
 
 	/*---- gRpc flag -----*/
