@@ -9,18 +9,18 @@ import (
 
 func main() {
 	app := cli.App{
-		Name:`keyServer`,
-		Usage: `key - value server`,
-		Version:`0.1`,
-		Flags:[]cli.Flag{
+		Name:    `int64 key server`,
+		Usage:   `key - value server`,
+		Version: `0.1`,
+		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:`address`,
+				Name: `address`,
 			},
 			&cli.IntFlag{
-				Name:`size`,
+				Name: `size`,
 			},
 		},
-		Action:serverRun,
+		Action: int64KeyServerRun,
 	}
 
 	err := app.Run(os.Args)
@@ -29,6 +29,6 @@ func main() {
 	}
 }
 
-func serverRun(c *cli.Context) error {
-	return server.StartKServer(c.String(`address`), c.Int(`size`))
+func int64KeyServerRun(c *cli.Context) error {
+	return server.StartInt64KeyServer(c.String(`address`), c.Int(`size`))
 }

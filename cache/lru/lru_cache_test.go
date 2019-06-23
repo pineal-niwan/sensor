@@ -44,8 +44,7 @@ func judgeHashValWithRefresh(t *testing.T, lruHash *LruHash, key string, val int
 }
 
 func judgeHashLen(t *testing.T, lruHash *LruHash, length int) {
-	ll := lruHash.Len()
-	ml := lruHash.HashLen()
+	ll, ml := lruHash.Len()
 	if ll != ml || ll != length {
 		t.Error(`judgeHashLen`)
 		t.Fail()
@@ -137,18 +136,18 @@ func TestLruHash_Get_Set4(t *testing.T) {
 	lruHash.Set("2", &_HashT{2})
 	judgeHashLen(t, lruHash, 2)
 
-	time.Sleep(time.Second*10)
+	time.Sleep(time.Second * 10)
 	lruHash.SetWithTimeout("3", &_HashT{3}, 1000)
 	judgeHashLen(t, lruHash, 3)
 
-	time.Sleep(time.Second*10)
+	time.Sleep(time.Second * 10)
 	lruHash.Set("1", &_HashT{11})
 	lruHash.Set("4", &_HashT{4})
 	judgeHashLen(t, lruHash, 3)
 
 	judgeHashNotExist(t, lruHash, "2")
 	judgeHashVal(t, lruHash, "1", 11)
-	time.Sleep(time.Second*10)
+	time.Sleep(time.Second * 10)
 	judgeHashNotExist(t, lruHash, "3")
 	judgeHashVal(t, lruHash, "4", 4)
 
@@ -167,14 +166,13 @@ func TestLruHash_Get_Set5(t *testing.T) {
 	judgeHashValWithRefresh(t, lruHash, "2", 2, 3)
 
 	t.Log(`before sleep`)
-	time.Sleep(2*time.Millisecond)
+	time.Sleep(2 * time.Millisecond)
 	t.Log(`after sleep`)
 	judgeHashNotExist(t, lruHash, "1")
 	judgeHashVal(t, lruHash, "2", 2)
 
 	judgeHashLen(t, lruHash, 1)
 }
-
 
 func TestLruHash_Get_Set6(t *testing.T) {
 	lruHash := NewLruHash(3)
@@ -188,7 +186,7 @@ func TestLruHash_Get_Set6(t *testing.T) {
 	judgeHashValWithRefresh(t, lruHash, "2", 2, 3)
 
 	t.Log(`before sleep`)
-	time.Sleep(5*time.Millisecond)
+	time.Sleep(5 * time.Millisecond)
 	t.Log(`after sleep`)
 	judgeHashNotExist(t, lruHash, "1")
 	judgeHashNotExist(t, lruHash, "2")

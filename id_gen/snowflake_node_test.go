@@ -19,7 +19,7 @@ func TestNode_Generate(t *testing.T) {
 
 	t1 := time.Now()
 	for i := int64(0); i < count; i++ {
-		id := node.Generate(uint8(i%256))
+		id := node.Generate(uint8(i % 256))
 		_, ok := x[id]
 		if ok {
 			t.Fail()

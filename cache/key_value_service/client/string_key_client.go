@@ -14,11 +14,11 @@ var (
 	ErrClientNotReady = errors.New(`client not ready`)
 )
 
-type KClient struct {
+type StringKeyClient struct {
 	// grpc 连接
 	conn *grpc.ClientConn
 	// k-v client接口
-	client pb.KeyValueServiceClient
+	client pb.StringKeyValueServiceClient
 	// rpc url
 	url string
 	// re-connection max back off (ms)
@@ -27,15 +27,15 @@ type KClient struct {
 }
 
 //新建Client -- maxBackOff(ms)
-func NewKClient(url string, maxBackOff int64) *KClient {
-	return &KClient{
+func NewStringKeyClient(url string, maxBackOff int64) *StringKeyClient {
+	return &StringKeyClient{
 		url:        url,
 		maxBackOff: time.Millisecond * time.Duration(maxBackOff),
 	}
 }
 
 //关闭
-func (c *KClient) Close() error {
+func (c *StringKeyClient) Close() error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -52,7 +52,7 @@ func (c *KClient) Close() error {
 }
 
 //连接
-func (c *KClient) Dial(timeout time.Duration) error {
+func (c *StringKeyClient) Dial(timeout time.Duration) error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -66,20 +66,20 @@ func (c *KClient) Dial(timeout time.Duration) error {
 	}
 
 	//设置client和conn
-	c.client = pb.NewKeyValueServiceClient(conn)
+	c.client = pb.NewStringKeyValueServiceClient(conn)
 	c.conn = conn
 	return nil
 }
 
 // 设置缓存
-func (c *KClient) Set(ctx context.Context, key string, value []byte) error {
+func (c *StringKeyClient) Set(ctx context.Context, key string, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
 	if c.client == nil {
 		return ErrClientNotReady
 	}
-	_, err := c.client.Set(ctx, &pb.MsgKeyValue{
+	_, err := c.client.Set(ctx, &pb.MsgStringKeyValue{
 		Key:   key,
 		Value: value,
 	})
@@ -87,14 +87,14 @@ func (c *KClient) Set(ctx context.Context, key string, value []byte) error {
 }
 
 // 设置缓存-带超时
-func (c *KClient) SetWithTimeout(ctx context.Context, key string, value []byte, timeout int64) error {
+func (c *StringKeyClient) SetWithTimeout(ctx context.Context, key string, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
 	if c.client == nil {
 		return ErrClientNotReady
 	}
-	_, err := c.client.SetWithTimeout(ctx, &pb.MsgKeyValueTimeout{
+	_, err := c.client.SetWithTimeout(ctx, &pb.MsgStringKeyValueTimeout{
 		Timeout: timeout,
 		Key:     key,
 		Value:   value,
@@ -103,14 +103,14 @@ func (c *KClient) SetWithTimeout(ctx context.Context, key string, value []byte, 
 }
 
 // 获取缓存
-func (c *KClient) Get(ctx context.Context, key string) ([]byte, error) {
+func (c *StringKeyClient) Get(ctx context.Context, key string) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
 	if c.client == nil {
 		return nil, ErrClientNotReady
 	}
-	msgValue, err := c.client.Get(ctx, &pb.MsgKey{
+	msgValue, err := c.client.Get(ctx, &pb.MsgStringKey{
 		Key: key,
 	})
 
@@ -126,14 +126,14 @@ func (c *KClient) Get(ctx context.Context, key string) ([]byte, error) {
 }
 
 // 获取缓存后刷新
-func (c *KClient) GetThenRefresh(ctx context.Context, key string, timeout int64) ([]byte, error) {
+func (c *StringKeyClient) GetThenRefresh(ctx context.Context, key string, timeout int64) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
 	if c.client == nil {
 		return nil, ErrClientNotReady
 	}
-	msgValue, err := c.client.GetThenRefresh(ctx, &pb.MsgKeyTimeout{
+	msgValue, err := c.client.GetThenRefresh(ctx, &pb.MsgStringKeyTimeout{
 		Timeout: timeout,
 		Key:     key,
 	})
@@ -150,7 +150,7 @@ func (c *KClient) GetThenRefresh(ctx context.Context, key string, timeout int64)
 }
 
 // 获取缓存长度
-func (c *KClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
+func (c *StringKeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -166,7 +166,7 @@ func (c *KClient) GetLen(ctx context.Context) (hashLen int, listLen int, err err
 }
 
 // 清空缓存
-func (c *KClient) Clear(ctx context.Context) error {
+func (c *StringKeyClient) Clear(ctx context.Context) error {
 	c.RLock()
 	defer c.RUnlock()
 

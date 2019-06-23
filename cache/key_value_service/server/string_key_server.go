@@ -9,7 +9,7 @@ import (
 	"net"
 )
 
-type KeyValueService struct {
+type StringKeyValueService struct {
 	kvHash *lru.LruHash
 }
 
@@ -18,26 +18,26 @@ var (
 )
 
 // 新建服务
-func NewKeyValueService(size int) *KeyValueService {
-	kService := &KeyValueService{}
+func NewStringKeyValueService(size int) *StringKeyValueService {
+	kService := &StringKeyValueService{}
 	kService.kvHash = lru.NewLruHash(size)
 	return kService
 }
 
 // 设置缓存
-func (k *KeyValueService) Set(ctx context.Context, msg *pb.MsgKeyValue) (*empty.Empty, error) {
+func (k *StringKeyValueService) Set(ctx context.Context, msg *pb.MsgStringKeyValue) (*empty.Empty, error) {
 	k.kvHash.Set(msg.Key, msg.Value)
 	return _emptyMsg, nil
 }
 
 // 设置缓存-带超时
-func (k *KeyValueService) SetWithTimeout(ctx context.Context, msg *pb.MsgKeyValueTimeout) (*empty.Empty, error) {
+func (k *StringKeyValueService) SetWithTimeout(ctx context.Context, msg *pb.MsgStringKeyValueTimeout) (*empty.Empty, error) {
 	k.kvHash.SetWithTimeout(msg.Key, msg.Value, msg.Timeout)
 	return _emptyMsg, nil
 }
 
 //设置value消息
-func (k *KeyValueService) setupMsgValue(val interface{}, ok bool) *pb.MsgValue {
+func (k *StringKeyValueService) setupMsgValue(val interface{}, ok bool) *pb.MsgValue {
 	msgValue := &pb.MsgValue{}
 	if !ok {
 		msgValue.Ok = false
@@ -56,19 +56,19 @@ func (k *KeyValueService) setupMsgValue(val interface{}, ok bool) *pb.MsgValue {
 }
 
 // 获取缓存
-func (k *KeyValueService) Get(ctx context.Context, in *pb.MsgKey) (*pb.MsgValue, error) {
+func (k *StringKeyValueService) Get(ctx context.Context, in *pb.MsgStringKey) (*pb.MsgValue, error) {
 	val, ok := k.kvHash.Get(in.Key)
 	return k.setupMsgValue(val, ok), nil
 }
 
 // 获取缓存后刷新
-func (k *KeyValueService) GetThenRefresh(ctx context.Context, in *pb.MsgKeyTimeout) (*pb.MsgValue, error) {
+func (k *StringKeyValueService) GetThenRefresh(ctx context.Context, in *pb.MsgStringKeyTimeout) (*pb.MsgValue, error) {
 	val, ok := k.kvHash.GetThenRefreshTimeout(in.Key, in.Timeout)
 	return k.setupMsgValue(val, ok), nil
 }
 
 // 获取缓存长度
-func (k *KeyValueService) GetLen(ctx context.Context, in *empty.Empty) (*pb.MsgLen, error) {
+func (k *StringKeyValueService) GetLen(ctx context.Context, in *empty.Empty) (*pb.MsgLen, error) {
 	hashLen, listLen := k.kvHash.Len()
 	return &pb.MsgLen{
 		HashLen: int32(hashLen),
@@ -77,22 +77,22 @@ func (k *KeyValueService) GetLen(ctx context.Context, in *empty.Empty) (*pb.MsgL
 }
 
 // 清空缓存
-func (k *KeyValueService) Clear(ctx context.Context, in *empty.Empty) (*empty.Empty, error) {
+func (k *StringKeyValueService) Clear(ctx context.Context, in *empty.Empty) (*empty.Empty, error) {
 	k.kvHash.Clear()
 	return _emptyMsg, nil
 }
 
-//启动Key-value服务
-func StartKServer(port string, size int) error {
+//启动string Key-value服务
+func StartStringKeyServer(port string, size int) error {
 	ln, err := net.Listen("tcp", port)
 	if err != nil {
 		return err
 	}
 
-	kService := NewKeyValueService(size)
+	kService := NewStringKeyValueService(size)
 
 	rpcSrv := grpc.NewServer()
-	pb.RegisterKeyValueServiceServer(rpcSrv, kService)
+	pb.RegisterStringKeyValueServiceServer(rpcSrv, kService)
 	err = rpcSrv.Serve(ln)
 	return err
 }

@@ -1,3 +1,5 @@
 .idea
 key_value_server/example/key_server
 cache/key_value_service/example/key_server
+cache/key_value_service/example/int64_key/int64_key_server
+cache/key_value_service/example/string_key/string_key_server
