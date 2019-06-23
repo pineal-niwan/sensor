@@ -1,4 +1,9 @@
-package httpx
+package consts
+
+const (
+	NameResult = `result`
+	NameErrMsg = `errMsg`
+)
 
 const (
 	//错误的请求
@@ -24,9 +29,4 @@ const (
 	NotFoundMsg = `common.notfound`
 	//服务器内部错误
 	ServerFailMsg = `common.serverFail`
-)
-
-var (
-	//空hash
-	__emptyHash = make(map[string]interface{})
 )

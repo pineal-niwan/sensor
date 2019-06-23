@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/jinzhu/gorm"
 	"github.com/pineal-niwan/sensor/cache"
+	"github.com/pineal-niwan/sensor/httpx/consts"
 	"github.com/pineal-niwan/sensor/logger"
 	"github.com/xeipuuv/gojsonschema"
 	"net/http"
@@ -26,8 +27,11 @@ type HashKeyWithTime struct {
 }
 
 var (
+	//缺省的cookie codec
 	defaultCookieCodec = securecookie.New([]byte(`zACJq*(lFao11n&@lt)#$qoGNHu3zjo6!`),
 		[]byte(`6!q*(lWQ1T8P$q1zj1ao7n3RS&@lt9)#`))
+	//空hash
+	__emptyHash = make(map[string]interface{})
 )
 
 // gin handler结构体
@@ -125,56 +129,64 @@ func (g *GinHandler) SetSessionKey(sessionKey string) {
 //回应错误的参数请求
 func (g *GinHandler) ResponseBadRequest(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": BadRequestCode,
-		"errMsg": BadRequestMsg,
+		consts.NameResult: consts.BadRequestCode,
+		consts.NameErrMsg: consts.BadRequestMsg,
 	})
 }
 
 //回应没有登录的请求
 func (g *GinHandler) ResponseNeedLogin(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": SessionFailCode,
-		"errMsg": SessionFailMsg,
+		consts.NameResult: consts.SessionFailCode,
+		consts.NameErrMsg: consts.SessionFailMsg,
 	})
 }
 
 //回应权限不足
 func (g *GinHandler) ResponsePermissionDeny(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": PermissionDenyCode,
-		"errMsg": PermissionDenyMsg,
+		consts.NameResult: consts.PermissionDenyCode,
+		consts.NameErrMsg: consts.PermissionDenyMsg,
 	})
 }
 
 //回应not found
 func (g *GinHandler) ResponseNotFound(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": NotFoundCode,
-		"errMsg": NotFoundMsg,
+		consts.NameResult: consts.NotFoundCode,
+		consts.NameErrMsg: consts.NotFoundMsg,
 	})
 }
 
 //回应服务器内部错
 func (g *GinHandler) ResponseInternalError(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": ServerFailCode,
-		"errMsg": ServerFailMsg,
+		consts.NameResult: consts.ServerFailCode,
+		consts.NameErrMsg: consts.ServerFailMsg,
+	})
+}
+
+//回应传入的result和error message
+func (g *GinHandler) ResponseErrMsg(c *gin.Context, code int, msg string) {
+	c.JSON(http.StatusOK, gin.H{
+		consts.NameResult: code,
+		consts.NameErrMsg: msg,
 	})
 }
 
 //回应正确的响应
 func (g *GinHandler) ResponseOK(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": http.StatusOK,
-		"errMsg": "",
+		consts.NameResult: http.StatusOK,
+		consts.NameErrMsg: "",
 	})
 }
 
 //回应正确的数据
 func (g *GinHandler) ResponseData(c *gin.Context, data interface{}) {
 	c.JSON(http.StatusOK, gin.H{
-		"result": http.StatusOK,
-		"errMsg": "",
+		consts.NameResult: http.StatusOK,
+		consts.NameErrMsg: "",
 		"data":   data,
 	})
 }
@@ -340,9 +352,11 @@ type GinDataHandler struct {
 }
 
 //新建
-func NewGinDataHandler(db *gorm.DB, cacheClient cache.IStringKeyCacheClient, iLogger logger.ILogger) *GinDataHandler {
+func NewGinDataHandler(db *gorm.DB, cacheClient cache.IStringKeyCacheClient,
+	iLogger logger.ILogger, jsonSchema map[string]*gojsonschema.Schema) *GinDataHandler {
+
 	ginDataHandler := &GinDataHandler{}
-	ginDataHandler.GinHandler = NewGinHandler(iLogger)
+	ginDataHandler.GinHandler = NewGinHandler(iLogger, jsonSchema)
 	ginDataHandler.db = db
 	ginDataHandler.cacheClient = cacheClient
 	return ginDataHandler
