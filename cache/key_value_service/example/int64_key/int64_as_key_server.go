@@ -30,5 +30,5 @@ func main() {
 }
 
 func int64KeyServerRun(c *cli.Context) error {
-	return server.StartInt64KeyServer(c.String(`address`), c.Int(`size`))
+	return server.StartInt64KeyValueServer(c.String(`address`), c.Int(`size`))
 }

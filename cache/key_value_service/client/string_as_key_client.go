@@ -14,7 +14,7 @@ var (
 	ErrClientNotReady = errors.New(`client not ready`)
 )
 
-type StringKeyClient struct {
+type StringAsKeyClient struct {
 	// grpc 连接
 	conn *grpc.ClientConn
 	// k-v client接口
@@ -27,15 +27,15 @@ type StringKeyClient struct {
 }
 
 //新建Client -- maxBackOff(ms)
-func NewStringKeyClient(url string, maxBackOff int64) *StringKeyClient {
-	return &StringKeyClient{
+func NewStringAsKeyClient(url string, maxBackOff int64) *StringAsKeyClient {
+	return &StringAsKeyClient{
 		url:        url,
 		maxBackOff: time.Millisecond * time.Duration(maxBackOff),
 	}
 }
 
 //关闭
-func (c *StringKeyClient) Close() error {
+func (c *StringAsKeyClient) Close() error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -52,7 +52,7 @@ func (c *StringKeyClient) Close() error {
 }
 
 //连接
-func (c *StringKeyClient) Dial(timeout time.Duration) error {
+func (c *StringAsKeyClient) Dial(timeout time.Duration) error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -72,7 +72,7 @@ func (c *StringKeyClient) Dial(timeout time.Duration) error {
 }
 
 // 设置缓存
-func (c *StringKeyClient) Set(ctx context.Context, key string, value []byte) error {
+func (c *StringAsKeyClient) Set(ctx context.Context, key string, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -87,7 +87,7 @@ func (c *StringKeyClient) Set(ctx context.Context, key string, value []byte) err
 }
 
 // 设置缓存-带超时
-func (c *StringKeyClient) SetWithTimeout(ctx context.Context, key string, value []byte, timeout int64) error {
+func (c *StringAsKeyClient) SetWithTimeout(ctx context.Context, key string, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -103,7 +103,7 @@ func (c *StringKeyClient) SetWithTimeout(ctx context.Context, key string, value 
 }
 
 // 设置缓存
-func (c *StringKeyClient) SetIfKeyNotExist(ctx context.Context, key string, value []byte) error {
+func (c *StringAsKeyClient) SetIfKeyNotExist(ctx context.Context, key string, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -118,7 +118,7 @@ func (c *StringKeyClient) SetIfKeyNotExist(ctx context.Context, key string, valu
 }
 
 // 设置缓存-带超时
-func (c *StringKeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key string, value []byte, timeout int64) error {
+func (c *StringAsKeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key string, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -134,7 +134,7 @@ func (c *StringKeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key s
 }
 
 // 设置缓存
-func (c *StringKeyClient) SetIfExist(ctx context.Context, key string, value []byte) error {
+func (c *StringAsKeyClient) SetIfExist(ctx context.Context, key string, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -149,7 +149,7 @@ func (c *StringKeyClient) SetIfExist(ctx context.Context, key string, value []by
 }
 
 // 设置缓存-带超时
-func (c *StringKeyClient) SetWithTimeoutIfExist(ctx context.Context, key string, value []byte, timeout int64) error {
+func (c *StringAsKeyClient) SetWithTimeoutIfExist(ctx context.Context, key string, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -165,7 +165,7 @@ func (c *StringKeyClient) SetWithTimeoutIfExist(ctx context.Context, key string,
 }
 
 // 获取缓存
-func (c *StringKeyClient) Get(ctx context.Context, key string) ([]byte, error) {
+func (c *StringAsKeyClient) Get(ctx context.Context, key string) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -188,7 +188,7 @@ func (c *StringKeyClient) Get(ctx context.Context, key string) ([]byte, error) {
 }
 
 // 获取缓存后刷新
-func (c *StringKeyClient) GetThenRefresh(ctx context.Context, key string, timeout int64) ([]byte, error) {
+func (c *StringAsKeyClient) GetThenRefresh(ctx context.Context, key string, timeout int64) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -212,7 +212,7 @@ func (c *StringKeyClient) GetThenRefresh(ctx context.Context, key string, timeou
 }
 
 // 获取缓存长度
-func (c *StringKeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
+func (c *StringAsKeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -228,7 +228,7 @@ func (c *StringKeyClient) GetLen(ctx context.Context) (hashLen int, listLen int,
 }
 
 // 清空缓存
-func (c *StringKeyClient) Clear(ctx context.Context) error {
+func (c *StringAsKeyClient) Clear(ctx context.Context) error {
 	c.RLock()
 	defer c.RUnlock()
 

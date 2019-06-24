@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-type Int64KeyClient struct {
+type Int64AsKeyClient struct {
 	// grpc 连接
 	conn *grpc.ClientConn
 	// k-v client接口
@@ -22,15 +22,15 @@ type Int64KeyClient struct {
 }
 
 //新建Client -- maxBackOff(ms)
-func NewInt64KeyClient(url string, maxBackOff int64) *Int64KeyClient {
-	return &Int64KeyClient{
+func NewInt64AsKeyClient(url string, maxBackOff int64) *Int64AsKeyClient {
+	return &Int64AsKeyClient{
 		url:        url,
 		maxBackOff: time.Millisecond * time.Duration(maxBackOff),
 	}
 }
 
 //关闭
-func (c *Int64KeyClient) Close() error {
+func (c *Int64AsKeyClient) Close() error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -47,7 +47,7 @@ func (c *Int64KeyClient) Close() error {
 }
 
 //连接
-func (c *Int64KeyClient) Dial(timeout time.Duration) error {
+func (c *Int64AsKeyClient) Dial(timeout time.Duration) error {
 	c.Lock()
 	defer c.Unlock()
 
@@ -67,7 +67,7 @@ func (c *Int64KeyClient) Dial(timeout time.Duration) error {
 }
 
 // 设置缓存
-func (c *Int64KeyClient) Set(ctx context.Context, key int64, value []byte) error {
+func (c *Int64AsKeyClient) Set(ctx context.Context, key int64, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -82,7 +82,7 @@ func (c *Int64KeyClient) Set(ctx context.Context, key int64, value []byte) error
 }
 
 // 设置缓存-带超时
-func (c *Int64KeyClient) SetWithTimeout(ctx context.Context, key int64, value []byte, timeout int64) error {
+func (c *Int64AsKeyClient) SetWithTimeout(ctx context.Context, key int64, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -98,7 +98,7 @@ func (c *Int64KeyClient) SetWithTimeout(ctx context.Context, key int64, value []
 }
 
 // 设置缓存
-func (c *Int64KeyClient) SetIfKeyNotExist(ctx context.Context, key int64, value []byte) error {
+func (c *Int64AsKeyClient) SetIfKeyNotExist(ctx context.Context, key int64, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -113,7 +113,7 @@ func (c *Int64KeyClient) SetIfKeyNotExist(ctx context.Context, key int64, value 
 }
 
 // 设置缓存-带超时
-func (c *Int64KeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key int64, value []byte, timeout int64) error {
+func (c *Int64AsKeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key int64, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -129,7 +129,7 @@ func (c *Int64KeyClient) SetWithTimeoutIfKeyNotExist(ctx context.Context, key in
 }
 
 // 设置缓存
-func (c *Int64KeyClient) SetIfKeyExist(ctx context.Context, key int64, value []byte) error {
+func (c *Int64AsKeyClient) SetIfKeyExist(ctx context.Context, key int64, value []byte) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -144,7 +144,7 @@ func (c *Int64KeyClient) SetIfKeyExist(ctx context.Context, key int64, value []b
 }
 
 // 设置缓存-带超时
-func (c *Int64KeyClient) SetWithTimeoutIfKeyExist(ctx context.Context, key int64, value []byte, timeout int64) error {
+func (c *Int64AsKeyClient) SetWithTimeoutIfKeyExist(ctx context.Context, key int64, value []byte, timeout int64) error {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -160,7 +160,7 @@ func (c *Int64KeyClient) SetWithTimeoutIfKeyExist(ctx context.Context, key int64
 }
 
 // 获取缓存
-func (c *Int64KeyClient) Get(ctx context.Context, key int64) ([]byte, error) {
+func (c *Int64AsKeyClient) Get(ctx context.Context, key int64) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -183,7 +183,7 @@ func (c *Int64KeyClient) Get(ctx context.Context, key int64) ([]byte, error) {
 }
 
 // 获取缓存后刷新
-func (c *Int64KeyClient) GetThenRefresh(ctx context.Context, key int64, timeout int64) ([]byte, error) {
+func (c *Int64AsKeyClient) GetThenRefresh(ctx context.Context, key int64, timeout int64) ([]byte, error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -207,7 +207,7 @@ func (c *Int64KeyClient) GetThenRefresh(ctx context.Context, key int64, timeout 
 }
 
 // 获取缓存长度
-func (c *Int64KeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
+func (c *Int64AsKeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, err error) {
 	c.RLock()
 	defer c.RUnlock()
 
@@ -223,7 +223,7 @@ func (c *Int64KeyClient) GetLen(ctx context.Context) (hashLen int, listLen int, 
 }
 
 // 清空缓存
-func (c *Int64KeyClient) Clear(ctx context.Context) error {
+func (c *Int64AsKeyClient) Clear(ctx context.Context) error {
 	c.RLock()
 	defer c.RUnlock()
 

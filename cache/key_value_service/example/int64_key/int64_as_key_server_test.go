@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func TestStringKV1(t *testing.T) {
-	clientKV := client.NewStringKeyClient(`localhost:10001`, 6000)
+func TestInt64KV1(t *testing.T) {
+	clientKV := client.NewInt64AsKeyClient(`localhost:10001`, 6000)
 	err := clientKV.Dial(time.Second * 3)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
@@ -17,7 +17,7 @@ func TestStringKV1(t *testing.T) {
 
 	ctx := context.Background()
 
-	err = clientKV.Set(ctx, `1`, []byte{1, 2, 3})
+	err = clientKV.Set(ctx, 1, []byte{1, 2, 3})
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -30,7 +30,7 @@ func TestStringKV1(t *testing.T) {
 	}
 	t.Logf(`l1:%+v -l2:%+v`, l1, l2)
 
-	buf, err := clientKV.Get(ctx, `1`)
+	buf, err := clientKV.Get(ctx, 1)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -38,8 +38,8 @@ func TestStringKV1(t *testing.T) {
 	t.Logf(`buf:%+v`, buf)
 }
 
-func TestStringKV2(t *testing.T) {
-	clientKV := client.NewStringKeyClient(`localhost:10001`, 6000)
+func TestInt64KV2(t *testing.T) {
+	clientKV := client.NewInt64AsKeyClient(`localhost:10001`, 6000)
 	err := clientKV.Dial(time.Second * 3)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
@@ -48,7 +48,7 @@ func TestStringKV2(t *testing.T) {
 
 	ctx := context.Background()
 
-	err = clientKV.SetWithTimeout(ctx, `1`, []byte{1, 2, 3}, 2000)
+	err = clientKV.SetWithTimeout(ctx, 1, []byte{1, 2, 3}, 2000)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -63,7 +63,7 @@ func TestStringKV2(t *testing.T) {
 
 	time.Sleep(time.Second * 6)
 
-	buf, err := clientKV.Get(ctx, `1`)
+	buf, err := clientKV.Get(ctx, 1)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -71,8 +71,8 @@ func TestStringKV2(t *testing.T) {
 	t.Logf(`buf:%+v`, buf)
 }
 
-func TestStringKV3(t *testing.T) {
-	clientKV := client.NewStringKeyClient(`localhost:10001`, 6000)
+func TestInt64KV3(t *testing.T) {
+	clientKV := client.NewInt64AsKeyClient(`localhost:10001`, 6000)
 	err := clientKV.Dial(time.Second * 3)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
@@ -81,7 +81,7 @@ func TestStringKV3(t *testing.T) {
 
 	ctx := context.Background()
 
-	err = clientKV.Set(ctx, `1`, nil)
+	err = clientKV.Set(ctx, 1, nil)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -94,7 +94,7 @@ func TestStringKV3(t *testing.T) {
 	}
 	t.Logf(`l1:%+v -l2:%+v`, l1, l2)
 
-	buf, err := clientKV.Get(ctx, `1`)
+	buf, err := clientKV.Get(ctx, 1)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -102,8 +102,8 @@ func TestStringKV3(t *testing.T) {
 	t.Logf(`buf:%+v`, buf)
 }
 
-func TestStringKV4(t *testing.T) {
-	clientKV := client.NewStringKeyClient(`localhost:10001`, 6000)
+func TestInt64KV4(t *testing.T) {
+	clientKV := client.NewInt64AsKeyClient(`localhost:10001`, 6000)
 	err := clientKV.Dial(time.Second * 3)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
@@ -112,7 +112,7 @@ func TestStringKV4(t *testing.T) {
 
 	ctx := context.Background()
 
-	err = clientKV.Set(ctx, `1`, make([]byte, 0))
+	err = clientKV.Set(ctx, 1, make([]byte, 0))
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()
@@ -125,7 +125,7 @@ func TestStringKV4(t *testing.T) {
 	}
 	t.Logf(`l1:%+v -l2:%+v`, l1, l2)
 
-	buf, err := clientKV.Get(ctx, `1`)
+	buf, err := clientKV.Get(ctx, 1)
 	if err != nil {
 		t.Errorf(`err:%+v`, err)
 		t.Fail()

@@ -9,7 +9,7 @@ type _HashT struct {
 	v int
 }
 
-func judgeHashNotExist(t *testing.T, lruHash *LruHash, key string) {
+func judgeHashNotExist(t *testing.T, lruHash *StringAsKeyLruHash, key string) {
 	_, ok := lruHash.Get(key)
 	if ok {
 		t.Error(`judgeHashNotExist`)
@@ -17,7 +17,7 @@ func judgeHashNotExist(t *testing.T, lruHash *LruHash, key string) {
 	}
 }
 
-func judgeHashVal(t *testing.T, lruHash *LruHash, key string, val int) {
+func judgeHashVal(t *testing.T, lruHash *StringAsKeyLruHash, key string, val int) {
 	v, ok := lruHash.Get(key)
 	if !ok {
 		t.Errorf(`judgeHashVal not ok`)
@@ -30,7 +30,7 @@ func judgeHashVal(t *testing.T, lruHash *LruHash, key string, val int) {
 	}
 }
 
-func judgeHashValWithRefresh(t *testing.T, lruHash *LruHash, key string, val int, timeout int64) {
+func judgeHashValWithRefresh(t *testing.T, lruHash *StringAsKeyLruHash, key string, val int, timeout int64) {
 	v, ok := lruHash.GetThenRefreshTimeout(key, timeout)
 	if !ok {
 		t.Error(`judgeHashValWithRefresh not ok`)
@@ -43,7 +43,7 @@ func judgeHashValWithRefresh(t *testing.T, lruHash *LruHash, key string, val int
 	}
 }
 
-func judgeHashLen(t *testing.T, lruHash *LruHash, length int) {
+func judgeHashLen(t *testing.T, lruHash *StringAsKeyLruHash, length int) {
 	ll, ml := lruHash.Len()
 	if ll != ml || ll != length {
 		t.Error(`judgeHashLen`)

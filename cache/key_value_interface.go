@@ -18,7 +18,7 @@ type ICacheClient interface {
 }
 
 //以string为主键的cache
-type IStringKeyCacheClient interface {
+type IStringAsKeyCacheClient interface {
 	ICacheClient
 	// 设置缓存
 	Set(ctx context.Context, key string, value []byte) error
@@ -31,7 +31,7 @@ type IStringKeyCacheClient interface {
 }
 
 //以int64为主键的cache
-type IInt64KeyCacheClient interface {
+type IInt64AsKeyCacheClient interface {
 	ICacheClient
 	// 设置缓存
 	Set(ctx context.Context, key int64, value []byte) error

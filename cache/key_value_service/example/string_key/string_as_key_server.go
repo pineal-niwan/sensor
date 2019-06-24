@@ -30,5 +30,5 @@ func main() {
 }
 
 func stringKeyServerRun(c *cli.Context) error {
-	return server.StartStringKeyServer(c.String(`address`), c.Int(`size`))
+	return server.StartStringKeyValueServer(c.String(`address`), c.Int(`size`))
 }

@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func judgeHashNotExistK64(t *testing.T, lruHash *LruInt64AsKeyHash, key int64) {
+func judgeHashNotExistK64(t *testing.T, lruHash *Int64AsKeyLruHash, key int64) {
 	_, ok := lruHash.Get(key)
 	if ok {
 		t.Error(`judgeHashNotExist`)
@@ -13,7 +13,7 @@ func judgeHashNotExistK64(t *testing.T, lruHash *LruInt64AsKeyHash, key int64) {
 	}
 }
 
-func judgeHashValK64(t *testing.T, lruHash *LruInt64AsKeyHash, key int64, val int) {
+func judgeHashValK64(t *testing.T, lruHash *Int64AsKeyLruHash, key int64, val int) {
 	v, ok := lruHash.Get(key)
 	if !ok {
 		t.Errorf(`judgeHashVal not ok`)
@@ -26,7 +26,7 @@ func judgeHashValK64(t *testing.T, lruHash *LruInt64AsKeyHash, key int64, val in
 	}
 }
 
-func judgeHashValWithRefreshK64(t *testing.T, lruHash *LruInt64AsKeyHash, key int64, val int, timeout int64) {
+func judgeHashValWithRefreshK64(t *testing.T, lruHash *Int64AsKeyLruHash, key int64, val int, timeout int64) {
 	v, ok := lruHash.GetThenRefreshTimeout(key, timeout)
 	if !ok {
 		t.Error(`judgeHashValWithRefresh not ok`)
@@ -39,7 +39,7 @@ func judgeHashValWithRefreshK64(t *testing.T, lruHash *LruInt64AsKeyHash, key in
 	}
 }
 
-func judgeHashLenK64(t *testing.T, lruHash *LruInt64AsKeyHash, length int) {
+func judgeHashLenK64(t *testing.T, lruHash *Int64AsKeyLruHash, length int) {
 	ll, ml := lruHash.Len()
 	if ll != ml || ll != length {
 		t.Error(`judgeHashLen`)

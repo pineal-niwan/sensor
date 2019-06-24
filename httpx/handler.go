@@ -348,11 +348,11 @@ func (g *GinHandler) POSTx(url string, handlerList ...HandleGinUrlFunc) {
 type GinDataHandler struct {
 	*GinHandler
 	db          *gorm.DB
-	cacheClient cache.IStringKeyCacheClient
+	cacheClient cache.IStringAsKeyCacheClient
 }
 
 //新建
-func NewGinDataHandler(db *gorm.DB, cacheClient cache.IStringKeyCacheClient,
+func NewGinDataHandler(db *gorm.DB, cacheClient cache.IStringAsKeyCacheClient,
 	iLogger logger.ILogger, jsonSchema map[string]*gojsonschema.Schema) *GinDataHandler {
 
 	ginDataHandler := &GinDataHandler{}
@@ -363,7 +363,7 @@ func NewGinDataHandler(db *gorm.DB, cacheClient cache.IStringKeyCacheClient,
 }
 
 //带logger的http处理函数
-type HandleGinDataUrlFunc func(c *gin.Context, db *gorm.DB, cacheClient cache.IStringKeyCacheClient, iLogger logger.ILogger)
+type HandleGinDataUrlFunc func(c *gin.Context, db *gorm.DB, cacheClient cache.IStringAsKeyCacheClient, iLogger logger.ILogger)
 
 //利用闭包，转换handler函数，加入logger支持
 func (g *GinDataHandler) convertHandler(handlerList []HandleGinDataUrlFunc) []gin.HandlerFunc {
